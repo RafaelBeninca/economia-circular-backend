@@ -1,1 +1,1 @@
-CREATE TYPE tipos_movimentacoes_residuos AS ENUM ('entrada', 'saida');
+CREATE TYPE TipoMovimentacaoResiduo AS ENUM ('entrada', 'saida');

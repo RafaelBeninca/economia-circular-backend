@@ -1,1 +1,1 @@
-CREATE TYPE tipos_unidades_medidas AS ENUM ('unidade', 'peca', 'metro', 'quilo');
+CREATE TYPE TipoUnidadeMedida AS ENUM ('unidade', 'peca', 'metro', 'quilo');

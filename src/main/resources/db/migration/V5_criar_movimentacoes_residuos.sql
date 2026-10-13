@@ -1,7 +1,7 @@
 CREATE TABLE movimentacoes_residuos (
   id SERIAL NOT NULL PRIMARY KEY,
   materiais_id INTEGER NOT NULL,
-  tipo tipos_movimentacoes_residuos NOT NULL,
+  tipo TipoMovimentacaoResiduo NOT NULL,
   quantidade NUMERIC(12, 2) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
 

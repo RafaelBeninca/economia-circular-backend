@@ -1,7 +1,7 @@
 CREATE TABLE materiais (
    id SERIAL NOT NULL PRIMARY KEY,
    nome VARCHAR(255) NOT NULL,
-   unidade_medida tipos_unidades_medidas NOT NULL,
+   unidade_medida TipoUnidadeMedida NOT NULL,
    preco_por_unidade NUMERIC(12, 2) NOT NULL DEFAULT 0.00,
    tipos_materiais_id INTEGER NOT NULL,
 
