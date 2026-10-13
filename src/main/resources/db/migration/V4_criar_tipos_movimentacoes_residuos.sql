@@ -1,0 +1,1 @@
+CREATE TYPE tipos_movimentacoes_residuos AS ENUM ('entrada', 'saida');

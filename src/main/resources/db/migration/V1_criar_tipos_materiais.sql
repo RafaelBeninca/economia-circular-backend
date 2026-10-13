@@ -1,0 +1,4 @@
+CREATE TABLE tipos_materiais (
+    id SERIAL NOT NULL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
