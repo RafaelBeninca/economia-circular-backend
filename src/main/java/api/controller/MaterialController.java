@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,8 +53,9 @@ public class MaterialController {
     @ApiResponse(responseCode = "400", description = "Corpo inválido: a lista \"campos\" diz o que corrigir",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @PostMapping
-    public MaterialResponseDTO criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
-        return this.materialService.criar(requestDTO);
+    public ResponseEntity<MaterialResponseDTO> criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
+        var material = this.materialService.criar(requestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(material);
     }
 
 }
