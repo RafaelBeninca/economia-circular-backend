@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tiposTarefas")
+@RequestMapping("/materiais")
 public class MaterialController {
 
     private final MaterialService materialService;
