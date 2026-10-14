@@ -3,6 +3,7 @@ package api.dto;
 import api.enums.TipoMovimentacaoResiduo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Dados para criar uma movimentação de resíduo")
 public record MovimentacaoResiduoRequestDTO(
@@ -16,7 +17,7 @@ public record MovimentacaoResiduoRequestDTO(
         TipoMovimentacaoResiduo movimentacaoResiduo,
 
         @Schema(description = "A quantidade da movimentação", example = "-15")
-        @NotBlank(message = "Quantidade não pode ser vazia!")
+        @NotNull(message = "Quantidade não pode ser vazia!")
         Double quantidade,
 
         @Schema(description = "A descrição da movimentação", example = "Saída referente à venda do material para terceiros")

@@ -3,6 +3,8 @@ package api.dto;
 import api.enums.TipoUnidadeMedida;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Schema(description = "Dados para criar um material")
@@ -13,8 +15,8 @@ public record MaterialRequestDTO(
         String nome,
 
         @Schema(description = "Preço que o material custa por unidade", example = "1234.56")
-        @NotBlank(message = "Preço por unidade não pode ser vazio!")
-        @PositiveOrZero(message = "O preço por unidade não pode ser menor que zero!")
+        @NotNull(message = "O preço por unidade não pode ser vazio!")
+        @Positive(message = "O preço deve ser maior que zero!")
         Double precoPorUnidade,
 
         @Schema(description = "A unidade de medida que o material é mensurado", example = "QUILO")
