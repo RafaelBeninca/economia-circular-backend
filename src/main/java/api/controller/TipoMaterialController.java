@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.TipoMaterialRequestDTO;
 import api.dto.TipoMaterialResponseDTO;
 import api.service.TipoMaterialService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/tiposTarefas")
+@RequestMapping("/tiposMateriais")
+@Tag(name = "Tipos Materiais", description = "Cadastro e consulta dos tipos de materiais")
 public class TipoMaterialController {
 
     private final TipoMaterialService tipoMaterialService;
