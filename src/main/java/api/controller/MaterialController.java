@@ -4,6 +4,7 @@ import api.dto.*;
 import api.service.MaterialService;
 import api.service.TipoMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,7 +37,7 @@ public class MaterialController {
     @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
-    public MaterialResponseDTO listarPorId(@PathVariable Long id) {
+    public MaterialResponseDTO listarPorId(@Parameter(description = "Id do material", example = "1") @PathVariable Long id) {
         return this.materialService.listarPorId(id);
     }
 

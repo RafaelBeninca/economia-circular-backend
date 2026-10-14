@@ -9,11 +9,11 @@ import jakarta.validation.constraints.NotNull;
 public record MovimentacaoResiduoRequestDTO(
 
         @Schema(description = "O ID do material da movimentação", example = "1")
-        @NotBlank(message = "Material não pode ser vazio!")
+        @NotNull(message = "Material não pode ser vazio!")
         Long materialId,
 
         @Schema(description = "O tipo da movimentação", example = "SAIDA")
-        @NotBlank(message = "Tipo da movimentação não pode ser vazio!")
+        @NotNull(message = "Tipo da movimentação não pode ser vazio!")
         TipoMovimentacaoResiduo movimentacaoResiduo,
 
         @Schema(description = "A quantidade da movimentação", example = "-15")

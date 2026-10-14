@@ -20,11 +20,11 @@ public record MaterialRequestDTO(
         Double precoPorUnidade,
 
         @Schema(description = "A unidade de medida que o material é mensurado", example = "QUILO")
-        @NotBlank(message = "Unidade de medida não pode ser vazio!")
+        @NotNull(message = "Unidade de medida não pode ser vazio!")
         TipoUnidadeMedida unidadeMedida,
 
         @Schema(description = "O ID do tipo de material que o material pertence", example = "1")
-        @NotBlank(message = "Tipo de material não pode ser vazio!")
+        @NotNull(message = "Tipo de material não pode ser vazio!")
         Long tipoMaterialId
 ) {
 }

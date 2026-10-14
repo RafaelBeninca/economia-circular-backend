@@ -4,6 +4,7 @@ import api.dto.*;
 import api.service.MaterialService;
 import api.service.MovimentacaoResiduoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,7 +37,7 @@ public class MovimentacaoResiduoController {
     @ApiResponse(responseCode = "404", description = "Não existe movimentação com esse id",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
-    public MovimentacaoResiduoResponseDTO listarPorId(@PathVariable Long id) {
+    public MovimentacaoResiduoResponseDTO listarPorId(@Parameter(description = "Id da movimentação", example = "1") @PathVariable Long id) {
         return this.movimentacaoResiduoService.listarPorId(id);
     }
 

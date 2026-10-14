@@ -87,7 +87,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErroDTO> tratarCorpoIlegivel(HttpMessageNotReadableException e, HttpServletRequest request) {
         // e.getMessage() traria detalhes internos do Jackson -- não vai para o cliente.
         return responder(HttpStatus.BAD_REQUEST,
-                "Corpo da requisição inválido: confira o JSON e o formato das datas (yyyy-MM-dd)", request, List.of());
+                "Corpo da requisição inválido: confira o JSON e os valores possíveis para os Enums", request, List.of());
     }
 
     // Monta o ErroDTO e a resposta HTTP -- um lugar só, igual a um mapper.
