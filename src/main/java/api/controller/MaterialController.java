@@ -24,18 +24,24 @@ public class MaterialController {
         this.materialService = materialService;
     }
 
+    @Operation(summary = "Lista os materiais", description = "Sem materiais cadastrados, a lista vem vazia, não 404.")
+    @ApiResponse(responseCode = "200", description = "Lista de materiais (pode vir vazia)")
     @GetMapping
     public List<MaterialResponseDTO> listar() {
         return this.materialService.listar();
     }
 
+    @Operation(summary = "Busca um material pelo id")
+    @ApiResponse(responseCode = "200", description = "Material encontrado")
+    @ApiResponse(responseCode = "404", description = "Não material com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
     public MaterialResponseDTO listarPorId(@PathVariable Long id) {
         return this.materialService.listarPorId(id);
     }
 
-    @Operation(summary = "Cadastra um material", description = "id e disponivel são definidos pela API, não pelo cliente.")
-    @ApiResponse(responseCode = "201", description = "Livro cadastrado: o corpo já traz o id gerado")
+    @Operation(summary = "Cadastra um material", description = "id é definido pela API, não pelo cliente.")
+    @ApiResponse(responseCode = "201", description = "Material cadastrado: o corpo já traz o id gerado")
     @ApiResponse(responseCode = "400", description = "Corpo inválido: a lista \"campos\" diz o que corrigir",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @PostMapping
