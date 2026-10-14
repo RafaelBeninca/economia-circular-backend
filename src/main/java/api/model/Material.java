@@ -18,13 +18,15 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 255)
     private String nome;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "unidade_medida", columnDefinition = "TipoUnidadeMedida")
+    @Column(name = "unidade_medida", columnDefinition = "TipoUnidadeMedida", nullable = false)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private TipoUnidadeMedida unidadeMedida;
 
+    @Column(nullable = false)
     private Double precoPorUnidade;
 
     @ManyToOne

@@ -18,12 +18,14 @@ public class MovimentacaoResiduo {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", columnDefinition = "TipoMovimentacaoResiduo")
+    @Column(name = "tipo", columnDefinition = "TipoMovimentacaoResiduo", nullable = false)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private TipoMovimentacaoResiduo movimentacaoResiduo;
 
+    @Column(nullable = false)
     private Double quantidade;
 
+    @Column(nullable = false, length = 255)
     private String descricao;
 
     @ManyToOne
