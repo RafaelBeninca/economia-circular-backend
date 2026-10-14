@@ -2,16 +2,18 @@ package api.service;
 
 import api.dto.MaterialRequestDTO;
 import api.dto.MaterialResponseDTO;
-import api.dto.TipoMaterialRequestDTO;
-import api.dto.TipoMaterialResponseDTO;
 import api.mapper.MaterialMapper;
-import api.mapper.TipoMaterialMapper;
 import api.repository.MaterialRepository;
 import api.repository.TipoMaterialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// CAMADA: Service
+// RESPONSABILIDADE: cadastrar e consultar materiais.
+// REGRAS: Não se aplicam
+// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id} e POST /materiais
+// SITUAÇÃO: implementada.
 @Service
 public class MaterialService {
 

@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// CAMADA: Controller
+// RESPONSABILIDADE: receber as requisições de /materiais.
+// REGRAS: Não se aplicam aqui
+// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id} e POST /materiais (/materiais em docs/contrato-da-api.md)
+// SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/materiais")
 @Tag(name = "Materiais", description = "Cadastro e consulta de materiais")

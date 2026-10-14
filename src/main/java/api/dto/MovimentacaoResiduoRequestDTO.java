@@ -5,6 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+// CAMADA: DTO
+// RESPONSABILIDADE: o que o cliente envia para cadastrar uma movimentação de resíduo
+// SITUAÇÃO: implementada
 @Schema(description = "Dados para criar uma movimentação de resíduo")
 public record MovimentacaoResiduoRequestDTO(
 

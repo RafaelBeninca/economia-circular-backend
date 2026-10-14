@@ -4,6 +4,9 @@ import api.enums.TipoMovimentacaoResiduo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+// CAMADA: DTO
+// RESPONSABILIDADE: o que a API devolve sobre uma movimentação de resíduo.
+// SITUAÇÃO: implementada
 @Schema(description = "Uma movimentação de resíduo")
 public record MovimentacaoResiduoResponseDTO(
 

@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+// CAMADA: Model
+// RESPONSABILIDADE: A movimentação (entrada ou saida) de um material originado de uma produção e que deseja ser controlada,
+// gravada na tabela movimentacoes_residuos (migration V5).
+// SITUAÇÃO: implementada
 @Entity
 @Table(name = "movimentacoes_residuos")
 public class MovimentacaoResiduo {

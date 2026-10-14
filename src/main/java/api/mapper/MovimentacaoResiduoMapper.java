@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// CAMADA: Mapper
+// RESPONSABILIDADE: converter MovimentacaoResiduoRequestDTO em MovimentacaoResiduo, e MovimentacaoResiduo em MovimentacaoResiduoResponseDTO
+// SITUAÇÃO: implementada
 @Component
 public class MovimentacaoResiduoMapper {
 

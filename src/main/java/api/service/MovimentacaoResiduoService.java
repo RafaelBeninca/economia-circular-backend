@@ -1,18 +1,19 @@
 package api.service;
 
-import api.dto.MaterialRequestDTO;
-import api.dto.MaterialResponseDTO;
 import api.dto.MovimentacaoResiduoRequestDTO;
 import api.dto.MovimentacaoResiduoResponseDTO;
-import api.mapper.MaterialMapper;
 import api.mapper.MovimentacaoResiduoMapper;
 import api.repository.MaterialRepository;
 import api.repository.MovimentacaoResiduoRepository;
-import api.repository.TipoMaterialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// CAMADA: Service
+// RESPONSABILIDADE: cadastrar e consultar movimentações de resíduos.
+// REGRAS: Não se aplicam
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id} e POST /movimentacoesResiduos (/movimentacoesResiduos em docs/contrato-da-api.md)
+// SITUAÇÃO: implementada
 @Service
 public class MovimentacaoResiduoService {
 

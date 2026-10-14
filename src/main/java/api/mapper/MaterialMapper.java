@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+// CAMADA: Mapper
+// RESPONSABILIDADE: converter MaterialRequestDTO em Material, e Material em MaterialResponseDTO.
+//                   É também usado pelo MovimentacaoResiduoMapper, para montar o material
+//                   que aparece dentro de cada movimentação
+// SITUAÇÃO: implementada
 @Component
 public class MaterialMapper {
 

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+// CAMADA: Mapper
+// RESPONSABILIDADE: converter TipoMaterialRequestDTO em TipoMaterial, e TipoMaterial em TipoMaterialResponseDTO.
+//                   Também é usado pelo MaterialMapper, para montar o tipo de material
+//                   que aparece dentro de cada material.
+// SITUAÇÃO: implementada
 @Component
 public class TipoMaterialMapper {
 

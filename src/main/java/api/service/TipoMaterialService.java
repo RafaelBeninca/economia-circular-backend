@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+// CAMADA: Service
+// RESPONSABILIDADE: cadastrar e consultar tipos de materiais
+// REGRAS: Não se aplicam aqui
+// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id} e POST /movimentacoesResiduos (/tiposMateriais em docs/contrato-da-api.md)
+// SITUAÇÃO: implementada
 @Service
 public class TipoMaterialService {
 

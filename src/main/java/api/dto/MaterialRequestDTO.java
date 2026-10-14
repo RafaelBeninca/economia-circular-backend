@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
+// CAMADA: DTO
+// RESPONSABILIDADE: o que o cliente envia para cadastrar um material.
+// SITUAÇÃO: implementada
 @Schema(description = "Dados para criar um material")
 public record MaterialRequestDTO(
 

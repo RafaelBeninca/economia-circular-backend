@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+// CAMADA: Model
+// RESPONSABILIDADE: Uma categoria que um material pode pertencer, gravada na tabela tipos_materiais (migration V1).
+// SITUAÇÃO: implementada
 @Entity
 @Table(name = "tipos_materiais")
 public class TipoMaterial {

@@ -3,6 +3,9 @@ package api.dto;
 import api.enums.TipoUnidadeMedida;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+// CAMADA: DTO
+// RESPONSABILIDADE: o que a API devolve sobre um material.
+// SITUAÇÃO: implementada
 @Schema(description = "Um material")
 public record MaterialResponseDTO(
 

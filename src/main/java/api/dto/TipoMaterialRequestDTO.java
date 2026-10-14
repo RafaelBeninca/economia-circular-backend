@@ -3,6 +3,9 @@ package api.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+// CAMADA: DTO
+// RESPONSABILIDADE: o que o cliente envia para cadastrar um tipo de material
+// SITUAÇÃO: implementada
 @Schema(description = "Dados para criar um tipo de material")
 public record TipoMaterialRequestDTO(
 

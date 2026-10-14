@@ -7,6 +7,9 @@ import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.util.List;
 
+// CAMADA: Model
+// RESPONSABILIDADE: Um material que pode sobrar originado de uma produção, gravada na tabela materiais (migration V3).
+// SITUAÇÃO: implementada
 @Entity
 @Table(name = "materiais")
 public class Material {

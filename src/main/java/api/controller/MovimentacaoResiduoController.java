@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// CAMADA: Controller
+// RESPONSABILIDADE: receber as requisições de /movimentacoesResiduos.
+// REGRAS: Não se aplicam aqui
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id} e POST /movimentacoesResiduos (/movimentacoesResiduos em docs/contrato-da-api.md)
+// SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/movimentacoesResiduos")
 @Tag(name = "Movimentações de Resíduos", description = "Cadastro e consulta de movimentações de entrada e saída de resíduos")
