@@ -1,11 +1,12 @@
 package api.controller;
 
-import api.dto.MaterialRequestDTO;
-import api.dto.MaterialResponseDTO;
-import api.dto.MovimentacaoResiduoRequestDTO;
-import api.dto.MovimentacaoResiduoResponseDTO;
+import api.dto.*;
 import api.service.MaterialService;
 import api.service.MovimentacaoResiduoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,26 @@ public class MovimentacaoResiduoController {
         this.movimentacaoResiduoService = movimentacaoResiduoService;
     }
 
+    @Operation(summary = "Lista as movimentações de resíduos", description = "Sem movimentações cadastradas, a lista vem vazia, não 404.")
+    @ApiResponse(responseCode = "200", description = "Lista de movimentações de resíduos (pode vir vazia)")
     @GetMapping
     public List<MovimentacaoResiduoResponseDTO> listar() {
         return this.movimentacaoResiduoService.listar();
     }
 
+    @Operation(summary = "Busca uma movimentação pelo id")
+    @ApiResponse(responseCode = "200", description = "Movimentação encontrada")
+    @ApiResponse(responseCode = "404", description = "Não existe movimentação com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
     public MovimentacaoResiduoResponseDTO listarPorId(@PathVariable Long id) {
         return this.movimentacaoResiduoService.listarPorId(id);
     }
 
+    @Operation(summary = "Cadastra uma movimentação", description = "id é definido pela API, não pelo cliente.")
+    @ApiResponse(responseCode = "201", description = "Movimentação cadastrada: o corpo já traz o id gerado")
+    @ApiResponse(responseCode = "400", description = "Corpo inválido: a lista \"campos\" diz o que corrigir",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @PostMapping
     public MovimentacaoResiduoResponseDTO criar(@RequestBody @Valid MovimentacaoResiduoRequestDTO requestDTO) {
         return this.movimentacaoResiduoService.criar(requestDTO);

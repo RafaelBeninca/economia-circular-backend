@@ -33,7 +33,7 @@ public class MaterialController {
 
     @Operation(summary = "Busca um material pelo id")
     @ApiResponse(responseCode = "200", description = "Material encontrado")
-    @ApiResponse(responseCode = "404", description = "Não material com esse id",
+    @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
     public MaterialResponseDTO listarPorId(@PathVariable Long id) {
