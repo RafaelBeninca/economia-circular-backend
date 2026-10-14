@@ -29,11 +29,11 @@ public record ErroDTO(
         String erro,
 
         // Mensagem pensada para o usuário final.
-        @Schema(description = "O que deu errado, em português", example = "Livro não encontrado: 999")
+        @Schema(description = "O que deu errado, em português", example = "Tipo de material não encontrado: 999")
         String mensagem,
 
         // Qual URL foi chamada.
-        @Schema(description = "Caminho da requisição", example = "/livros/999")
+        @Schema(description = "Caminho da requisição", example = "/tiposMateriais/999")
         String caminho,
 
         // Quando aconteceu (horário do servidor).

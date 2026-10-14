@@ -1,9 +1,12 @@
 package api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "Dados para criar um tipo de material")
 public record TipoMaterialRequestDTO(
 
+        @Schema(description = "Nome do tipo de material", example = "Biológico")
         @NotBlank(message = "Nome não pode ser vazio!")
         String nome
 ) {
