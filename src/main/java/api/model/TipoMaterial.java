@@ -18,8 +18,7 @@ public class TipoMaterial {
 
     protected TipoMaterial() {}
 
-    public TipoMaterial(Long id, String nome) {
-        this.id = id;
+    public TipoMaterial(String nome) {
         this.nome = nome;
     }
 

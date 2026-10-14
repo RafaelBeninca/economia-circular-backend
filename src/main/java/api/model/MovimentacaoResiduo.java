@@ -28,12 +28,10 @@ public class MovimentacaoResiduo {
 
     protected MovimentacaoResiduo() {}
 
-    public MovimentacaoResiduo(Long id, TipoMovimentacaoResiduo movimentacaoResiduo, Double quantidade, String descricao, Material material) {
-        this.id = id;
+    public MovimentacaoResiduo(TipoMovimentacaoResiduo movimentacaoResiduo, Double quantidade, String descricao) {
         this.movimentacaoResiduo = movimentacaoResiduo;
         this.quantidade = quantidade;
         this.descricao = descricao;
-        this.material = material;
     }
 
     public Long getId() {

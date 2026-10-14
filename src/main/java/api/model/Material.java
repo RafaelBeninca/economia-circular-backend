@@ -34,12 +34,10 @@ public class Material {
 
     protected Material() {}
 
-    public Material(Long id, String nome, TipoUnidadeMedida unidadeMedida, Double precoPorUnidade, TipoMaterial tipoMaterial) {
-        this.id = id;
+    public Material(String nome, TipoUnidadeMedida unidadeMedida, Double precoPorUnidade) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
         this.precoPorUnidade = precoPorUnidade;
-        this.tipoMaterial = tipoMaterial;
     }
 
     public Long getId() {
