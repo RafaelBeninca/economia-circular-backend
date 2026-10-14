@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.MaterialRequestDTO;
 import api.dto.MaterialResponseDTO;
 import api.service.MaterialService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class MovimentacaoResiduoController {
     }
 
     @PostMapping
-    public MaterialResponseDTO criar(@RequestBody MaterialRequestDTO requestDTO) {
+    public MaterialResponseDTO criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
         return this.materialService.criar(requestDTO);
     }
 

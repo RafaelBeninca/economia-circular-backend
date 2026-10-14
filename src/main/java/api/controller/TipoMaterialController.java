@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.TipoMaterialRequestDTO;
 import api.dto.TipoMaterialResponseDTO;
 import api.service.TipoMaterialService;
+import jakarta.validation.Valid;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class TipoMaterialController {
     }
 
     @PostMapping
-    public TipoMaterialResponseDTO criar(@RequestBody TipoMaterialRequestDTO requestDTO) {
+    public TipoMaterialResponseDTO criar(@RequestBody @Valid TipoMaterialRequestDTO requestDTO) {
         return this.tipoMaterialService.criar(requestDTO);
     }
 
