@@ -1,7 +1,9 @@
 package api.dto;
 
 import api.enums.TipoMovimentacaoResiduo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -27,4 +29,11 @@ public record MovimentacaoResiduoRequestDTO(
         @NotBlank(message = "Descrição não pode ser vazia!")
         String descricao
 ) {
+
+        @JsonIgnore
+        @Schema(hidden = true)
+        @AssertTrue(message = "Quantidade não pode ser zero!")
+        public boolean isQuantidadeDiferenteDeZero() {
+                return quantidade == null || quantidade != 0;
+        }
 }

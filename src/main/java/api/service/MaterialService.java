@@ -11,7 +11,8 @@ import java.util.List;
 
 // CAMADA: Service
 // RESPONSABILIDADE: cadastrar e consultar materiais.
-// REGRAS: Não se aplicam
+// REGRAS:
+//         R3: Não podem exitir materiais duplicados (com mesmo nome e unidade de medida)
 // ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id} e POST /materiais
 // SITUAÇÃO: implementada.
 @Service
@@ -39,6 +40,10 @@ public class MaterialService {
 
     public MaterialResponseDTO criar(MaterialRequestDTO requestDTO) {
         var tipoMaterial = this.tipoMaterialRepository.findById(requestDTO.tipoMaterialId()).orElseThrow(() -> new RecursoNaoEncontradoException("Tipo Material não encontrado!"));
+
+        if (this.materialRepository.existsByNomeIgnoreCaseAndUnidadeMedida(requestDTO.nome().trim(), requestDTO.unidadeMedida())) {
+            throw new RegraDeNegocioException("Já existe um material com esse nome e unidade de medida!");
+        }
 
         var material = this.materialRepository.save(materialMapper.toEntity(requestDTO, tipoMaterial));
 
