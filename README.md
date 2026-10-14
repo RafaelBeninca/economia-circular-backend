@@ -1,5 +1,4 @@
-# {{Nome do Projeto}}
-
+# Economia Circular
 > **Este é o ponto de partida do projeto do grupo.** Apague este bloco antes de entregar.
 >
 > **Objetivo do exercício:** planejar e organizar um backend antes de programar tudo. O grupo cria o problema e as regras de negócio, desenha o sistema, monta a estrutura de todas as entidades, faz a API funcionar com as regras implementadas e documenta tudo neste README. O enunciado completo está em `Aula 10-11/README.md`, no repositório da disciplina.
@@ -19,7 +18,7 @@
 >
 > Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
 
-{{Uma ou duas frases: o que o sistema faz e para quem. Quem nunca viu o projeto tem que entender o que ele é lendo só este parágrafo.}}
+O sistema tem como objetivo gerenciar o controle de resíduos de fábricas, com registro de materiais e suas propriedades, e também com monitoramento de entrada e saída de destino.
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -39,22 +38,22 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 | Nome | GitHub |
 |---|---|
-| {{Nome completo}} | [@{{usuario}}](https://github.com/{{usuario}}) |
-| {{Nome completo}} | [@{{usuario}}](https://github.com/{{usuario}}) |
-| {{Nome completo}} | [@{{usuario}}](https://github.com/{{usuario}}) |
+| Rafael Avila Benincá | [@RafaelBeninca](https://github.com/RafaelBeninca) |
+| Gustavo de Rezende Biava | [@GustavoBiava](https://github.com/GustavoBiava) |
+| Lucas Siqueira Sosa | [@lucasssosa](https://github.com/lucasssosa) |
 
 ## O problema
 
-**Tema sorteado:** {{tema}}
+**Tema sorteado:** Sustentabilidade e Meio Ambiente
 
-{{Em 3 a 5 linhas: o problema que o grupo criou dentro do tema, quem sofre com ele hoje e o que o sistema muda.}}
+O problema origina a partir da falta de controle na gestão de estoques em indústrias responsáveis pela produção de peças, que consequentemente resulta no desperdício de materiais, afetando gravemente os custos. Com esse sistema, é possível acompanhar mais facilmente o processo de entrada e saída dos resíduos.
 
 **Quem usa o sistema:**
 
 | Quem | O que faz no sistema |
 |---|---|
-| Bibliotecário *(exemplo)* | Cadastra livros e leitores, registra empréstimos e devoluções |
-| ... | ... |
+| Responsável pelo estoque | Cadastra materiais, registra entradas e saídas de resíduos |
+| Administrador do sistema | Gerencia sistema e seus usuários |
 
 **Regras de negócio.** No mínimo 3, criadas pelo grupo a partir do problema: o que o sistema precisa garantir ou impedir. Precisam atender à necessidade do tema e estar implementadas no código. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
 
