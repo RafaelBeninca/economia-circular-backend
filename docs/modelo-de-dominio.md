@@ -38,6 +38,7 @@ Uma entrada ou uma saída de um material, que alimenta o saldo daquele material.
 | `quantidade` | `Double` | `quantidade` | sim | Diferente de zero (DTO). Positiva na entrada e negativa na saída (R2). A saída não pode exceder o saldo (R1) |
 | `descricao` | `String` | `descricao` | sim | Até 255 caracteres |
 | `material` | `Material` | `materiais_id` | sim | Precisa existir |
+| `criadoEm` | `LocalDateTime` | `criado_em` | sim | Definido pela API com `@CreationTimestamp`, não pelo cliente. Sem setter e com `updatable = false` |
 
 ## Relacionamentos
 
@@ -70,6 +71,7 @@ erDiagram
         TipoMovimentacaoResiduo tipo
         numeric quantidade
         varchar descricao
+        timestamp criado_em
     }
 ```
 
@@ -86,3 +88,4 @@ Todas existem em `src/main/resources/db/migration`. A ordem importa: a tabela re
 | V3 | `V3__criar_materiais.sql` | Tabela `materiais`, com a chave estrangeira para `tipos_materiais` |
 | V4 | `V4__criar_tipos_movimentacoes_residuos.sql` | Enum `TipoMovimentacaoResiduo` (`entrada`, `saida`) |
 | V5 | `V5__criar_movimentacoes_residuos.sql` | Tabela `movimentacoes_residuos`, com a chave estrangeira para `materiais` |
+| V6 | `V6__adicionar_criado_em_movimentacoes_residuos.sql` | Coluna `criado_em` em `movimentacoes_residuos`. `DEFAULT NOW()` é obrigatório: a coluna nasce `NOT NULL` e a tabela pode já ter linhas |
