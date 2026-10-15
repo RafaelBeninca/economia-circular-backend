@@ -1,6 +1,6 @@
 # API de Economia Circular
 
-API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço, para quem gerencia os resíduos da produção.
+API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço agregado, para quem gerencia os resíduos da produção.
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -64,9 +64,9 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| TipoMaterial | `V1_criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
-| Material | `V3_criar_materiais.sql`, pronta (enum em `V2_criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
-| MovimentacaoResiduo | `V5_criar_movimentacoes_residuos.sql`, pronta (enum em `V4_criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
+| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
+| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
+| MovimentacaoResiduo | `V5__criar_movimentacoes_residuos.sql`, pronta (enum em `V4__criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
 
 ## Entidades
 
@@ -108,7 +108,7 @@ Content-Type: application/json
 }
 ```
 
-Resposta, `201 Created`:
+Resposta, `201 OK`:
 
 ```json
 {

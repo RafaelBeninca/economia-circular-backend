@@ -81,8 +81,8 @@ Todas existem em `src/main/resources/db/migration`. A ordem importa: a tabela re
 
 | Versão | Arquivo | O que cria |
 |---|---|---|
-| V1 | `V1_criar_tipos_materiais.sql` | Tabela `tipos_materiais` |
-| V2 | `V2_criar_tipos_unidades_medidas.sql` | Enum `TipoUnidadeMedida` (`unidade`, `peca`, `metro`, `quilo`) |
-| V3 | `V3_criar_materiais.sql` | Tabela `materiais`, com a chave estrangeira para `tipos_materiais` |
-| V4 | `V4_criar_tipos_movimentacoes_residuos.sql` | Enum `TipoMovimentacaoResiduo` (`entrada`, `saida`) |
-| V5 | `V5_criar_movimentacoes_residuos.sql` | Tabela `movimentacoes_residuos`, com a chave estrangeira para `materiais` |
+| V1 | `V1__criar_tipos_materiais.sql` | Tabela `tipos_materiais` |
+| V2 | `V2__criar_tipos_unidades_medidas.sql` | Enum `TipoUnidadeMedida` (`unidade`, `peca`, `metro`, `quilo`) |
+| V3 | `V3__criar_materiais.sql` | Tabela `materiais`, com a chave estrangeira para `tipos_materiais` |
+| V4 | `V4__criar_tipos_movimentacoes_residuos.sql` | Enum `TipoMovimentacaoResiduo` (`entrada`, `saida`) |
+| V5 | `V5__criar_movimentacoes_residuos.sql` | Tabela `movimentacoes_residuos`, com a chave estrangeira para `materiais` |

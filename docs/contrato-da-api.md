@@ -102,7 +102,7 @@ Requisição:
 }
 ```
 
-Resposta, `201 Created`:
+Resposta, `201 OK`:
 
 ```json
 {
@@ -130,7 +130,7 @@ Requisição (saída, com quantidade negativa):
 }
 ```
 
-Resposta, `201 Created`:
+Resposta, `201 OK`:
 
 ```json
 {

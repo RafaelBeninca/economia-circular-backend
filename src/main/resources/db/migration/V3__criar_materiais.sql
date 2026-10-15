@@ -5,5 +5,6 @@ CREATE TABLE materiais (
    preco_por_unidade NUMERIC(12, 2) NOT NULL DEFAULT 0.00,
    tipos_materiais_id INTEGER NOT NULL,
 
-   CONSTRAINT fk_materiais_tipos_material FOREIGN KEY (tipos_materiais_id) REFERENCES tipos_materiais(id)
+   CONSTRAINT fk_materiais_tipos_material FOREIGN KEY (tipos_materiais_id) REFERENCES tipos_materiais(id),
+   CONSTRAINT uq_materiais_nome_unidade UNIQUE (nome, unidade_medida)
 );
