@@ -23,7 +23,7 @@ import java.util.List;
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/materiais")
-@Tag(name = "Materiais", description = "Cadastro e consulta de materiais")
+@Tag(name = "Materiais", description = "Cadastro e consulta de materiais, com o saldo de cada um")
 public class MaterialController {
 
     private final MaterialService materialService;
@@ -32,10 +32,10 @@ public class MaterialController {
         this.materialService = materialService;
     }
 
-    @Operation(summary = "Lista os materiais", description = "Sem materiais cadastrados, a lista vem vazia, não 404.")
+    @Operation(summary = "Lista os materiais", description = "Cada material vem com o saldo atual. Sem materiais cadastrados, a lista vem vazia, não 404.")
     @ApiResponse(responseCode = "200", description = "Lista de materiais (pode vir vazia)")
     @GetMapping
-    public List<MaterialResponseDTO> listar() {
+    public List<MaterialComSaldoResponseDTO> listar() {
         return this.materialService.listar();
     }
 
@@ -44,7 +44,7 @@ public class MaterialController {
     @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping("/{id}")
-    public MaterialResponseDTO listarPorId(@Parameter(description = "Id do material", example = "1") @PathVariable Long id) {
+    public MaterialComSaldoResponseDTO listarPorId(@Parameter(description = "Id do material", example = "1") @PathVariable Long id) {
         return this.materialService.listarPorId(id);
     }
 
@@ -53,7 +53,7 @@ public class MaterialController {
     @ApiResponse(responseCode = "400", description = "Corpo inválido: a lista \"campos\" diz o que corrigir",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @PostMapping
-    public ResponseEntity<MaterialResponseDTO> criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
+    public ResponseEntity<MaterialComSaldoResponseDTO> criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
         var material = this.materialService.criar(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(material);
     }
@@ -65,7 +65,7 @@ public class MaterialController {
     @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
             content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @PutMapping("/{id}")
-    public MaterialResponseDTO atualizar(
+    public MaterialComSaldoResponseDTO atualizar(
             @Parameter(description = "Id do material", example = "1") @PathVariable Long id,
             @RequestBody @Valid MaterialUpdateRequestDTO requestDTO) {
         return this.materialService.atualizar(id, requestDTO);
