@@ -42,7 +42,7 @@ Os resíduos gerados na produção não têm gestão, onde ninguém sabe ao cert
 |---|---|---|---|
 | R1 | A saída de um material não pode ser maior que o saldo dele (a soma de todas as suas movimentações) | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
 | R2 | Uma movimentação de saída precisa ter quantidade negativa e uma de entrada, quantidade positiva | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
-| R3 | Não pode existir mais de um material com o mesmo nome e a mesma unidade de medida | `MaterialService` | `POST /materiais` |
+| R3 | Não pode existir mais de um material com o mesmo nome e a mesma unidade de medida | `MaterialService` | `POST /materiais` e `PUT /materiais/{id}` |
 
 **Fora do escopo:** logística de transporte de resíduos e gerenciamento de destinos homologados.
 
@@ -87,10 +87,12 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 | `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200`   | Nenhum |
 | `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200`   | `404` |
 | `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201`   | `400` |
+| `PUT` | `/tiposMateriais/{id}` | Edita o nome de um tipo de material | Nenhuma | `200`   | `400`, `404` |
 | `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | `204` | `400`, `404` |
 | `GET` | `/materiais` | Lista os materiais | Nenhuma | `200`   | Nenhum |
 | `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200`   | `404` |
 | `POST` | `/materiais` | Cadastra um material | R3 | `201`   | `400`, `404` |
+| `PUT` | `/materiais/{id}` | Edita o nome e o preço por unidade de um material | R3 | `200`   | `400`, `404` |
 | `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | `204` | `400`, `404` |
 | `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200`   | Nenhum |
 | `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200`   | `404` |
@@ -155,7 +157,7 @@ Estão previstas, mas ainda não respondem.
 
 | Recurso | O que vai fazer |
 |---|---|
-| Não há | Atualização (`PUT`) não faz parte desta etapa |
+| Não há | Não há rotas pendentes: `PUT` e `DELETE` já respondem |
 
 O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-api.md](docs/contrato-da-api.md).
 
@@ -188,9 +190,9 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 |---|---|
 | Desenho | Completo: problema e regras neste README, modelo e contrato em `docs/` |
 | Estrutura | As 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller |
-| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam; R1, R2 e R3 estão implementadas |
+| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam, e `PUT /{id}` edita tipos de materiais e materiais; R1, R2 e R3 estão implementadas |
 
-**Ainda não funciona:** nada planejado nesta etapa está pendente. A atualização (`PUT`) não foi implementada.
+**Ainda não funciona:** nada planejado nesta etapa está pendente: `PUT` e `DELETE` já estão implementadas.
 
 ## Documentação
 

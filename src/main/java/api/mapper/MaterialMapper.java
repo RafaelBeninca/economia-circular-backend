@@ -2,6 +2,7 @@ package api.mapper;
 
 import api.dto.MaterialRequestDTO;
 import api.dto.MaterialResponseDTO;
+import api.dto.MaterialUpdateRequestDTO;
 import api.dto.TipoMaterialRequestDTO;
 import api.dto.TipoMaterialResponseDTO;
 import api.model.Material;
@@ -14,7 +15,8 @@ import java.util.Optional;
 // CAMADA: Mapper
 // RESPONSABILIDADE: converter MaterialRequestDTO em Material, e Material em MaterialResponseDTO.
 //                   É também usado pelo MovimentacaoResiduoMapper, para montar o material
-//                   que aparece dentro de cada movimentação
+//                   que aparece dentro de cada movimentação.
+//                   updateEntity aplica um MaterialUpdateRequestDTO a um Material já existente.
 // SITUAÇÃO: implementada
 @Component
 public class MaterialMapper {
@@ -30,6 +32,11 @@ public class MaterialMapper {
         material.setTipoMaterial(tipoMaterial);
 
         return material;
+    }
+
+    public void updateEntity(Material material, MaterialUpdateRequestDTO dto) {
+        material.setNome(dto.nome());
+        material.setPrecoPorUnidade(dto.precoPorUnidade());
     }
 
     public MaterialResponseDTO toResponse(Material material) {

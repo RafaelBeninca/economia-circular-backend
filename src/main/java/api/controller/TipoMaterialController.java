@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.ErroDTO;
 import api.dto.TipoMaterialRequestDTO;
 import api.dto.TipoMaterialResponseDTO;
+import api.dto.TipoMaterialUpdateRequestDTO;
 import api.service.TipoMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,7 +23,7 @@ import java.util.Optional;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /tiposMateriais.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais, PUT /tiposMateriais/{id} e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/tiposMateriais")
@@ -60,6 +61,19 @@ public class TipoMaterialController {
         var tipoMaterial = this.tipoMaterialService.criar(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(tipoMaterial);
+    }
+
+    @Operation(summary = "Edita um tipo de material", description = "Só o nome pode ser alterado; o id não muda.")
+    @ApiResponse(responseCode = "200", description = "Tipo de material atualizado")
+    @ApiResponse(responseCode = "400", description = "Corpo inválido: a lista \"campos\" diz o que corrigir",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Não existe tipo de material com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @PutMapping("/{id}")
+    public TipoMaterialResponseDTO atualizar(
+            @Parameter(description = "Id do tipo de material", example = "1") @PathVariable Long id,
+            @RequestBody @Valid TipoMaterialUpdateRequestDTO requestDTO) {
+        return this.tipoMaterialService.atualizar(id, requestDTO);
     }
 
     @Operation(summary = "Remove um tipo de material")

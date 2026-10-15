@@ -2,6 +2,7 @@ package api.service;
 
 import api.dto.TipoMaterialRequestDTO;
 import api.dto.TipoMaterialResponseDTO;
+import api.dto.TipoMaterialUpdateRequestDTO;
 import api.mapper.TipoMaterialMapper;
 import api.model.TipoMaterial;
 import api.repository.TipoMaterialRepository;
@@ -11,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 // CAMADA: Service
-// RESPONSABILIDADE: cadastrar e consultar tipos de materiais
+// RESPONSABILIDADE: cadastrar, consultar e editar tipos de materiais
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais, PUT /tiposMateriais/{id} e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @Service
 public class TipoMaterialService {
@@ -40,6 +41,14 @@ public class TipoMaterialService {
         var tipoMaterial = this.tipoMaterialRepository.save(tipoMaterialMapper.toEntity(requestDTO));
 
         return this.tipoMaterialMapper.toResponse(tipoMaterial);
+    }
+
+    public TipoMaterialResponseDTO atualizar(Long id, TipoMaterialUpdateRequestDTO requestDTO) {
+        var tipoMaterial = this.tipoMaterialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Tipo material não encontrado!"));
+
+        this.tipoMaterialMapper.updateEntity(tipoMaterial, requestDTO);
+
+        return this.tipoMaterialMapper.toResponse(this.tipoMaterialRepository.save(tipoMaterial));
     }
 
     public void remover(Long id) {
