@@ -1,17 +1,36 @@
+import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EstadoVazio } from "../components/EstadoVazio";
 import { Icone } from "../components/Icone";
-import { materiais, movimentacoesDe } from "../demo/dados";
+import { ambiente } from "../ambiente";
+import { consultas, ehMaterialNaoEncontrado } from "../api/consultas";
+import { useConsulta } from "../hooks/useConsulta";
+import { EstadoConsulta } from "../components/EstadoConsulta";
 import { dataHora, moeda, quantidade, unidades } from "../formatacao";
 
 // CAMADA: Página
 // RESPONSABILIDADE: destacar o saldo de um material e apresentar seu extrato.
 // REGRAS: sinais de entrada/saída são apresentados por rótulo, além da cor.
-// SITUAÇÃO: extrato ilustrativo; formulários e integração serão etapas posteriores
+// SITUAÇÃO: saldo e extrato da fonte configurada; formulários serão outra etapa
 export function Material() {
   const { id } = useParams();
-  const material = materiais.find((item) => String(item.id) === id);
-  if (!material)
+  const carregar = useCallback(
+    (signal: AbortSignal) =>
+      consultas.consultarMaterial(
+        id && /^[1-9]\d*$/.test(id) ? Number(id) : NaN,
+        signal,
+      ),
+    [id],
+  );
+  const { dados, carregando, erro, recarregar } = useConsulta(
+    `material:${id}`,
+    carregar,
+  );
+  if (carregando)
+    return (
+      <EstadoConsulta carregando erro={null} aoTentarNovamente={recarregar} />
+    );
+  if (ehMaterialNaoEncontrado(erro))
     return (
       <EstadoVazio
         titulo="Material não encontrado"
@@ -21,10 +40,18 @@ export function Material() {
           </Link>
         }
       >
-        Escolha um dos materiais disponíveis no painel de demonstração.
+        Escolha um dos materiais disponíveis no painel de saldos.
       </EstadoVazio>
     );
-  const movimentacoes = movimentacoesDe(material);
+  if (erro || !dados)
+    return (
+      <EstadoConsulta
+        carregando={false}
+        erro={erro}
+        aoTentarNovamente={recarregar}
+      />
+    );
+  const { material, movimentacoes } = dados;
   return (
     <>
       <Link className="ec-back-link" to="/">
@@ -52,9 +79,13 @@ export function Material() {
             {quantidade(material.saldo)}{" "}
             <span>{unidades[material.unidadeMedida]}</span>
           </h2>
-          <span className="ec-positive-label">
+          <span
+            className={`ec-positive-label ${material.saldo <= 0 ? "ec-empty-balance" : ""}`}
+          >
             <span />
-            Disponível para reaproveitamento
+            {material.saldo > 0
+              ? "Disponível para reaproveitamento"
+              : "Sem saldo disponível"}
           </span>
         </div>
         <dl>
@@ -71,9 +102,16 @@ export function Material() {
       <div className="ec-demo-notice">
         <Icone nome="info" />
         <p>
-          <strong>Você está explorando um exemplo.</strong> Os registros abaixo
-          são ilustrativos. Entradas e saídas serão habilitadas ao integrar a
-          API.
+          <strong>
+            {ambiente.modo === "demo"
+              ? "Você está explorando um exemplo."
+              : "Consulta ao estoque."}
+          </strong>{" "}
+          {ambiente.modo === "demo"
+            ? "Os registros abaixo são ilustrativos. "
+            : ""}
+          O registro de entradas e saídas ficará disponível na etapa de
+          formulários.
         </p>
       </div>
       <section
@@ -105,29 +143,41 @@ export function Material() {
           </div>
         </div>
         <span id="registro-pendente" className="ec-sr-only">
-          Registro indisponível nesta demonstração. A integração com a API ainda
-          será implementada.
+          Registro indisponível nesta etapa. Os formulários de entrada e saída
+          ainda serão implementados.
         </span>
         <div className="ec-movement-list">
+          {movimentacoes.length === 0 && (
+            <EstadoVazio titulo="Nenhuma movimentação registrada">
+              O extrato aparecerá aqui após os primeiros registros deste
+              material.
+            </EstadoVazio>
+          )}
           {movimentacoes.map((movimentacao) => (
             <article className="ec-movement" key={movimentacao.id}>
               <span
-                className={`ec-movement-icon ${movimentacao.tipo === "ENTRADA" ? "ec-movement-in" : "ec-movement-out"}`}
+                className={`ec-movement-icon ${movimentacao.tipoMovimentacaoResiduo === "ENTRADA" ? "ec-movement-in" : "ec-movement-out"}`}
               >
                 <Icone
-                  nome={movimentacao.tipo === "ENTRADA" ? "entrada" : "saida"}
+                  nome={
+                    movimentacao.tipoMovimentacaoResiduo === "ENTRADA"
+                      ? "entrada"
+                      : "saida"
+                  }
                 />
               </span>
               <div className="ec-movement-description">
                 <h3>{movimentacao.descricao}</h3>
                 <span
                   className={
-                    movimentacao.tipo === "ENTRADA"
+                    movimentacao.tipoMovimentacaoResiduo === "ENTRADA"
                       ? "ec-text-success"
                       : "ec-text-error"
                   }
                 >
-                  {movimentacao.tipo === "ENTRADA" ? "Entrada" : "Saída"}
+                  {movimentacao.tipoMovimentacaoResiduo === "ENTRADA"
+                    ? "Entrada"
+                    : "Saída"}
                 </span>
                 <span className="ec-movement-separator">·</span>
                 <time dateTime={movimentacao.criadoEm}>
@@ -135,7 +185,7 @@ export function Material() {
                 </time>
               </div>
               <strong className="ec-numeric ec-movement-quantity">
-                {movimentacao.tipo === "ENTRADA" ? "+" : "−"}
+                {movimentacao.tipoMovimentacaoResiduo === "ENTRADA" ? "+" : "−"}
                 {quantidade(Math.abs(movimentacao.quantidade))}{" "}
                 <span className="ec-unit">
                   {unidades[material.unidadeMedida]}

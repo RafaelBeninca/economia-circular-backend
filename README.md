@@ -188,7 +188,7 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 
 ## Frontend
 
-A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. Nesta etapa, há um painel de saldos e um extrato de material com **dados de exemplo**, busca, filtro por categoria e tema claro/escuro. A integração HTTP e os formulários serão implementados nas próximas etapas.
+A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. O painel de saldos e o extrato consultam a fonte configurada: **demonstração**, padrão sem HTTP, ou **API**, por `VITE_MODO_DADOS=api` e `VITE_API_URL`. A origem aparece na interface; erros de rede não ativam exemplos. Os bastidores mostram as requisições reais. Formulários e cadastros serão etapas posteriores.
 
 ```bash
 cd frontend

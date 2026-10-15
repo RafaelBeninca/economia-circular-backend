@@ -2,16 +2,51 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { EstadoVazio } from "../components/EstadoVazio";
 import { Icone } from "../components/Icone";
-import { categorias, materiais } from "../demo/dados";
+import { consultas } from "../api/consultas";
+import { useConsulta } from "../hooks/useConsulta";
+import { EstadoConsulta } from "../components/EstadoConsulta";
 import { moeda, normalizar, quantidade, unidades } from "../formatacao";
 
 // CAMADA: Página
 // RESPONSABILIDADE: apresentar saldo e valor dos resíduos, agrupados por tipo.
 // REGRAS: valor exibido = saldo × preço por unidade; a API será a fonte do saldo.
-// SITUAÇÃO: demonstração visual com busca e filtro locais
+// SITUAÇÃO: dados da fonte configurada; busca e filtro permanecem locais
+const carregarMateriais = (signal: AbortSignal) =>
+  consultas.listarMateriais(signal);
+
 export function PainelSaldos() {
+  // Atualizar exemplos é local; só o modo API gera uma requisição real.
   const [busca, setBusca] = useState("");
   const [categoriaId, setCategoriaId] = useState("");
+  const { dados, carregando, erro, recarregar } = useConsulta(
+    "materiais",
+    carregarMateriais,
+  );
+  if (carregando || erro || !dados)
+    return (
+      <EstadoConsulta
+        carregando={carregando}
+        erro={erro}
+        aoTentarNovamente={recarregar}
+      />
+    );
+  const materiais = dados;
+  const categorias = [
+    ...new Map(
+      materiais.map((material) => [
+        material.tipoMaterial.id,
+        material.tipoMaterial,
+      ]),
+    ).values(),
+  ];
+  // Cores dependem da posição visual, não de ids fixos do banco.
+  const corDaCategoria = (id: number) =>
+    (categorias.findIndex((categoria) => categoria.id === id) % 3) + 1;
+  const categoriaAtiva = categorias.some(
+    (categoria) => String(categoria.id) === categoriaId,
+  )
+    ? categoriaId
+    : "";
   const valorTotal = materiais.reduce(
     (total, material) => total + material.saldo * material.precoPorUnidade,
     0,
@@ -19,7 +54,7 @@ export function PainelSaldos() {
   const visiveis = materiais.filter(
     (material) =>
       normalizar(material.nome).includes(normalizar(busca.trim())) &&
-      (!categoriaId || String(material.tipoMaterial.id) === categoriaId),
+      (!categoriaAtiva || String(material.tipoMaterial.id) === categoriaAtiva),
   );
   const grupos = categorias
     .map((categoria) => ({
@@ -47,9 +82,14 @@ export function PainelSaldos() {
           <h1>Painel de saldos</h1>
           <p>Saiba o que você tem. Encontre o valor de cada sobra.</p>
         </div>
-        <span className="ec-heading-icon">
-          <Icone nome="camadas" width="26" height="26" />
-        </span>
+        <button
+          className="ec-icon-button ec-refresh"
+          onClick={recarregar}
+          aria-label="Atualizar saldos"
+          title="Atualizar saldos"
+        >
+          <Icone nome="ciclo" width="23" height="23" />
+        </button>
       </div>
       <section className="ec-overview" aria-labelledby="valor-estoque">
         <div className="ec-overview-value">
@@ -76,16 +116,20 @@ export function PainelSaldos() {
           <div className="ec-distribution-top">
             <span>Um estoque, novas possibilidades.</span>
             <div>
-              <strong>{materiais.length}</strong> materiais <span>em</span>{" "}
-              <strong>{categorias.length}</strong> categorias
+              <strong>{materiais.length}</strong>{" "}
+              {materiais.length === 1 ? "material" : "materiais"}{" "}
+              <span>em</span> <strong>{categorias.length}</strong>{" "}
+              {categorias.length === 1 ? "categoria" : "categorias"}
             </div>
           </div>
           <div className="ec-distribution-bar" aria-hidden="true">
             {distribuicao.map((categoria) => (
               <span
                 key={categoria.id}
-                className={`ec-category-color-${categoria.id}`}
-                style={{ width: `${(categoria.valor / valorTotal) * 100}%` }}
+                className={`ec-category-color-${corDaCategoria(categoria.id)}`}
+                style={{
+                  width: `${valorTotal > 0 ? (categoria.valor / valorTotal) * 100 : 0}%`,
+                }}
               />
             ))}
           </div>
@@ -93,7 +137,7 @@ export function PainelSaldos() {
             {distribuicao.map((categoria) => (
               <div key={categoria.id}>
                 <span
-                  className={`ec-category-dot ec-category-color-${categoria.id}`}
+                  className={`ec-category-dot ec-category-color-${corDaCategoria(categoria.id)}`}
                 />
                 <span>{categoria.nome}</span>
                 <strong>{moeda(categoria.valor)}</strong>
@@ -123,7 +167,7 @@ export function PainelSaldos() {
             </label>
             <select
               aria-label="Filtrar por categoria"
-              value={categoriaId}
+              value={categoriaAtiva}
               onChange={(evento) => setCategoriaId(evento.target.value)}
             >
               <option value="">Todas as categorias</option>
@@ -142,20 +186,28 @@ export function PainelSaldos() {
         </p>
         {grupos.length === 0 ? (
           <EstadoVazio
-            titulo="Nenhum material encontrado"
+            titulo={
+              materiais.length
+                ? "Nenhum material encontrado"
+                : "Nenhum material cadastrado"
+            }
             acao={
-              <button
-                className="ec-button ec-button-secondary"
-                onClick={() => {
-                  setBusca("");
-                  setCategoriaId("");
-                }}
-              >
-                Limpar filtros
-              </button>
+              materiais.length > 0 ? (
+                <button
+                  className="ec-button ec-button-secondary"
+                  onClick={() => {
+                    setBusca("");
+                    setCategoriaId("");
+                  }}
+                >
+                  Limpar filtros
+                </button>
+              ) : undefined
             }
           >
-            Tente outro nome ou escolha uma categoria diferente.
+            {materiais.length
+              ? "Tente outro nome ou escolha uma categoria diferente."
+              : "Os materiais cadastrados aparecerão aqui com seus saldos."}
           </EstadoVazio>
         ) : (
           <div className="ec-material-groups">
@@ -168,7 +220,7 @@ export function PainelSaldos() {
                 <header className="ec-group-heading">
                   <div>
                     <span
-                      className={`ec-category-dot ec-category-color-${grupo.id}`}
+                      className={`ec-category-dot ec-category-color-${corDaCategoria(grupo.id)}`}
                     />
                     <h3 id={`grupo-${grupo.id}`}>{grupo.nome}</h3>
                     <span>

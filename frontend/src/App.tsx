@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ambiente } from "./ambiente";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { GavetaBastidores } from "./bastidores/GavetaBastidores";
 import { BotaoTema } from "./components/BotaoTema";
@@ -9,7 +10,7 @@ import { PainelSaldos } from "./pages/PainelSaldos";
 
 // CAMADA: Aplicação
 // RESPONSABILIDADE: reunir navegação, tema e a estrutura comum das duas telas.
-// SITUAÇÃO: esqueleto implementado, ainda sem integração HTTP
+// SITUAÇÃO: consultas integradas e origem dos dados identificada na interface
 export function App() {
   const [bastidoresAbertos, setBastidoresAbertos] = useState(false);
   const { pathname } = useLocation();
@@ -74,9 +75,11 @@ export function App() {
             <span>{pathname === "/" ? "Visão geral" : "Material"}</span>
           </div>
           <div className="ec-topbar-actions">
-            <span className="ec-demo-badge">
+            <span
+              className={`ec-demo-badge ${ambiente.modo === "api" ? "ec-source-api" : ""}`}
+            >
               <span />
-              Dados de exemplo
+              {ambiente.modo === "demo" ? "Dados de exemplo" : "Dados da API"}
             </span>
             <BotaoTema />
             <span className="ec-topbar-divider" />
@@ -115,7 +118,11 @@ export function App() {
               Economia Circular <span aria-hidden="true">·</span> Cada sobra tem
               valor.
             </span>
-            <span>Prévia com dados ilustrativos</span>
+            <span>
+              {ambiente.modo === "demo"
+                ? "Prévia com dados ilustrativos"
+                : "Consulta ao estoque pela API"}
+            </span>
           </footer>
         </main>
       </div>

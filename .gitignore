@@ -40,3 +40,8 @@ build/
 ### Frontend ###
 /frontend/node_modules/
 /frontend/dist/
+
+# Configuração local do frontend; o exemplo público continua versionado.
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example
