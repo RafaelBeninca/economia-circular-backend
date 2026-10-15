@@ -12,8 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     boolean existsByNomeIgnoreCaseAndUnidadeMedida(String nome, TipoUnidadeMedida unidadeMedida);
-
-    // Mesma checagem da R3, ignorando o próprio material editado: sem o "IdNot",
-    // editar só o preço de um material acusaria ele mesmo como duplicado.
-    boolean existsByNomeIgnoreCaseAndUnidadeMedidaAndIdNot(String nome, TipoUnidadeMedida unidadeMedida, Long id);
 }

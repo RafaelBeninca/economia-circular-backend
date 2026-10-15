@@ -19,7 +19,7 @@ import java.util.List;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /materiais.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id}, POST /materiais, PUT /materiais/{id} e DELETE /materiais/{id} (/materiais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id}, POST /materiais e DELETE /materiais/{id} (/materiais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/materiais")
@@ -56,19 +56,6 @@ public class MaterialController {
     public ResponseEntity<MaterialResponseDTO> criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
         var material = this.materialService.criar(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(material);
-    }
-
-    @Operation(summary = "Edita um material", description = "Só o nome e o preço por unidade podem ser alterados; o id, a unidade de medida e o tipo de material não mudam.")
-    @ApiResponse(responseCode = "200", description = "Material atualizado")
-    @ApiResponse(responseCode = "400", description = "Corpo inválido ou nome já usado por outro material com a mesma unidade de medida",
-            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
-    @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
-            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
-    @PutMapping("/{id}")
-    public MaterialResponseDTO atualizar(
-            @Parameter(description = "Id do material", example = "1") @PathVariable Long id,
-            @RequestBody @Valid MaterialUpdateRequestDTO requestDTO) {
-        return this.materialService.atualizar(id, requestDTO);
     }
 
     @Operation(summary = "Remove um material")

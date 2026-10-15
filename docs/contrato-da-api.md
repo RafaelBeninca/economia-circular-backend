@@ -23,7 +23,6 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 | `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | lista de `TipoMaterialResponseDTO` | `200` | Nenhum | sim |
 | `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `TipoMaterialResponseDTO` | `200` | `404` | sim |
 | `POST` | `/tiposMateriais` | Cadastra um tipo de material | `TipoMaterialRequestDTO` | `TipoMaterialResponseDTO` | `201` | `400` | sim |
-| `PUT` | `/tiposMateriais/{id}` | Edita o nome de um tipo de material | `TipoMaterialUpdateRequestDTO` | `TipoMaterialResponseDTO` | `200` | `400`, `404` | sim |
 | `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | Nenhuma (sem corpo) | `204` | `400`, `404` | sim |
 
 ### Materiais
@@ -33,7 +32,6 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 | `GET` | `/materiais` | Lista os materiais | Nenhuma | lista de `MaterialResponseDTO` | `200`   | Nenhum | sim |
 | `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `MaterialResponseDTO` | `200`   | `404` | sim |
 | `POST` | `/materiais` | Cadastra um material | `MaterialRequestDTO` | `MaterialResponseDTO` | `201`   | `400`, `404` | sim |
-| `PUT` | `/materiais/{id}` | Edita o nome e o preço por unidade de um material | `MaterialUpdateRequestDTO` | `MaterialResponseDTO` | `200` | `400`, `404` | sim |
 | `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | Nenhuma (sem corpo) | `204` | `400`, `404` | sim |
 
 ### Movimentações de resíduos
@@ -55,7 +53,6 @@ Não há rotas fora do CRUD.
 |---|---|---|---|---------|---|
 | `POST` | `/movimentacoesResiduos` | Registra a movimentação e valida saldo e sinal | R1 e R2 | `201`   | `400`, `404` |
 | `POST` | `/materiais` | Cadastra o material e impede duplicidade de nome e unidade | R3 | `201`   | `400`, `404` |
-| `PUT` | `/materiais/{id}` | Edita o nome e o preço e impede duplicidade de nome e unidade | R3 | `200`   | `400`, `404` |
 
 ## DTOs
 
@@ -64,10 +61,8 @@ O que entra não é igual ao que sai: o cliente não envia `id`.
 | DTO | Direção | Campos | Validações |
 |---|---|---|---|
 | `TipoMaterialRequestDTO` | entrada | `nome` | obrigatório (`@NotBlank`) |
-| `TipoMaterialUpdateRequestDTO` | entrada | `nome` | obrigatório (`@NotBlank`) |
 | `TipoMaterialResponseDTO` | saída | `id`, `nome` | Nenhuma |
 | `MaterialRequestDTO` | entrada | `nome`, `precoPorUnidade`, `unidadeMedida`, `tipoMaterialId` | todos obrigatórios; `nome` com `@NotBlank`; `precoPorUnidade` com `@Positive` |
-| `MaterialUpdateRequestDTO` | entrada | `nome`, `precoPorUnidade` | ambos obrigatórios; `nome` com `@NotBlank`; `precoPorUnidade` com `@Positive` |
 | `MaterialResponseDTO` | saída | `id`, `nome`, `unidadeMedida`, `precoPorUnidade`, `tipoMaterial` (`TipoMaterialResponseDTO`) | Nenhuma |
 | `MovimentacaoResiduoRequestDTO` | entrada | `materialId`, `movimentacaoResiduo`, `quantidade`, `descricao` | todos obrigatórios; `descricao` com `@NotBlank`; `quantidade` diferente de zero |
 | `MovimentacaoResiduoResponseDTO` | saída | `id`, `material` (`MaterialResponseDTO`), `tipoMovimentacaoResiduo`, `quantidade`, `descricao` | Nenhuma |
@@ -97,25 +92,6 @@ Resposta, `201 Created`:
 }
 ```
 
-### `PUT /tiposMateriais/{id}`
-
-Requisição (só o `nome` muda):
-
-```json
-{
-  "nome": "Metal e ligas"
-}
-```
-
-Resposta, `200 OK`:
-
-```json
-{
-  "id": 1,
-  "nome": "Metal e ligas"
-}
-```
-
 ### `POST /materiais`
 
 Requisição:
@@ -137,32 +113,6 @@ Resposta, `201 OK`:
   "nome": "Sucata de alumínio",
   "unidadeMedida": "QUILO",
   "precoPorUnidade": 8.5,
-  "tipoMaterial": {
-    "id": 1,
-    "nome": "Metal"
-  }
-}
-```
-
-### `PUT /materiais/{id}`
-
-Requisição (só o `nome` e o `precoPorUnidade` mudam):
-
-```json
-{
-  "nome": "Sucata de alumínio limpa",
-  "precoPorUnidade": 9.75
-}
-```
-
-Resposta, `200 OK`:
-
-```json
-{
-  "id": 1,
-  "nome": "Sucata de alumínio limpa",
-  "unidadeMedida": "QUILO",
-  "precoPorUnidade": 9.75,
   "tipoMaterial": {
     "id": 1,
     "nome": "Metal"
