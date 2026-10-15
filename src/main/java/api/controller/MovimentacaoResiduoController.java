@@ -19,7 +19,7 @@ import java.util.List;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /movimentacoesResiduos.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /movimentacoesResiduos (com o filtro opcional ?materialId=), GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/movimentacoesResiduos")
@@ -32,21 +32,11 @@ public class MovimentacaoResiduoController {
         this.movimentacaoResiduoService = movimentacaoResiduoService;
     }
 
-    @Operation(summary = "Lista as movimentações de resíduos",
-            description = "Da mais recente para a mais antiga. Com o filtro opcional materialId, "
-                    + "devolve só as movimentações daquele material -- o extrato dele. "
-                    + "Sem movimentações, a lista vem vazia, não 404.")
+    @Operation(summary = "Lista as movimentações de resíduos", description = "Sem movimentações cadastradas, a lista vem vazia, não 404.")
     @ApiResponse(responseCode = "200", description = "Lista de movimentações de resíduos (pode vir vazia)")
-    @ApiResponse(responseCode = "400", description = "materialId não pode ser convertido para um número inteiro",
-            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
     @GetMapping
-    public List<MovimentacaoResiduoResponseDTO> listar(
-            // @RequestParam = parâmetro de consulta, o que vem depois do "?" na URL
-            // (?materialId=1). Diferente do @PathVariable, que é parte do caminho (/{id}).
-            // required = false torna o filtro opcional: sem ele, a lista é completa.
-            @Parameter(description = "Filtra pelo id do material", example = "1")
-            @RequestParam(required = false) Long materialId) {
-        return this.movimentacaoResiduoService.listar(materialId);
+    public List<MovimentacaoResiduoResponseDTO> listar() {
+        return this.movimentacaoResiduoService.listar();
     }
 
     @Operation(summary = "Busca uma movimentação pelo id")

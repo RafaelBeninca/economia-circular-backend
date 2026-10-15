@@ -18,7 +18,7 @@ import java.util.List;
 //         R2: Movimentações com o tipo 'SAIDA' devem possuir quantidade negativa, e movimentações do tipo 'ENTRADA' devem possuir
 //             quantidade positiva
 //
-// ROTAS ATENDIDAS: GET /movimentacoesResiduos (com o filtro opcional ?materialId=), GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @Service
 public class MovimentacaoResiduoService {
@@ -33,18 +33,8 @@ public class MovimentacaoResiduoService {
         this.materialRepository = materialRepository;
     }
 
-    // materialId é opcional. Sem ele, a resposta é a lista de todas as movimentações;
-    // com ele, vira o extrato de um material. As duas consultas já saem ordenadas da
-    // movimentação mais recente para a mais antiga.
-    //
-    // Um materialId que não existe devolve lista vazia, e não 404: filtro que não encontra
-    // nada é um resultado vazio, não um recurso inexistente.
-    public List<MovimentacaoResiduoResponseDTO> listar(Long materialId) {
-        var movimentacoes = materialId == null
-                ? this.movimentacaoResiduoRepository.findAllByOrderByCriadoEmDesc()
-                : this.movimentacaoResiduoRepository.findByMaterialIdOrderByCriadoEmDesc(materialId);
-
-        return movimentacaoResiduoMapper.toResponseList(movimentacoes);
+    public List<MovimentacaoResiduoResponseDTO> listar() {
+        return movimentacaoResiduoMapper.toResponseList(this.movimentacaoResiduoRepository.findAll());
     }
 
     public MovimentacaoResiduoResponseDTO listarPorId(Long id) {

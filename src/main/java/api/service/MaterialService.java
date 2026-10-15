@@ -1,19 +1,17 @@
 package api.service;
 
-import api.dto.MaterialComSaldoResponseDTO;
 import api.dto.MaterialRequestDTO;
+import api.dto.MaterialResponseDTO;
 import api.dto.MaterialUpdateRequestDTO;
 import api.mapper.MaterialMapper;
 import api.repository.MaterialRepository;
-import api.repository.MovimentacaoResiduoRepository;
 import api.repository.TipoMaterialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 // CAMADA: Service
-// RESPONSABILIDADE: cadastrar, consultar e editar materiais, sempre devolvendo o saldo atual junto.
+// RESPONSABILIDADE: cadastrar, consultar e editar materiais.
 // REGRAS:
 //         R3: Não podem existir materiais duplicados (com mesmo nome e unidade de medida). Vale ao cadastrar e ao editar o nome
 // ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id}, POST /materiais, PUT /materiais/{id} e DELETE /materiais/{id}
@@ -24,38 +22,24 @@ public class MaterialService {
     private final MaterialRepository materialRepository;
     private final MaterialMapper materialMapper;
     private final TipoMaterialRepository tipoMaterialRepository;
-    // O saldo de um material é a soma das movimentações dele, que vivem no outro repositório.
-    private final MovimentacaoResiduoRepository movimentacaoResiduoRepository;
 
-    public MaterialService(MaterialRepository materialRepository, MaterialMapper materialMapper, TipoMaterialRepository tipoMaterialRepository, MovimentacaoResiduoRepository movimentacaoResiduoRepository) {
+    public MaterialService(MaterialRepository materialRepository, MaterialMapper materialMapper, TipoMaterialRepository tipoMaterialRepository) {
         this.materialRepository = materialRepository;
         this.materialMapper = materialMapper;
         this.tipoMaterialRepository = tipoMaterialRepository;
-        this.movimentacaoResiduoRepository = movimentacaoResiduoRepository;
     }
 
-    // Duas consultas explícitas para buscar materiais e calcular os saldos: uma traz os
-    // materiais, a outra traz todos os saldos de uma vez. Relacionamentos carregados pelo
-    // Hibernate podem gerar consultas adicionais; o agrupamento evita um SUM por material.
-    //
-    // O caminho ingênuo seria somar o saldo dentro do laço, chamando somarQuantidadePorMaterial
-    // para cada material -- o que daria 1 + N consultas (o problema N+1). Com
-    // spring.jpa.show-sql=true, a diferença aparece no console.
-    public List<MaterialComSaldoResponseDTO> listar() {
-        var saldosPorMaterialId = this.movimentacaoResiduoRepository.somarQuantidadeDeTodosOsMateriais()
-                .stream()
-                .collect(Collectors.toMap(MovimentacaoResiduoRepository.SaldoPorMaterial::getMaterialId, MovimentacaoResiduoRepository.SaldoPorMaterial::getSaldo));
-
-        return this.materialMapper.toResponseComSaldoList(this.materialRepository.findAll(), saldosPorMaterialId);
+    public List<MaterialResponseDTO> listar() {
+        return materialMapper.toResponseList(this.materialRepository.findAll());
     }
 
-    public MaterialComSaldoResponseDTO listarPorId(Long id) {
+    public MaterialResponseDTO listarPorId(Long id) {
         var material = this.materialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Material não encontrado!"));
 
-        return this.materialMapper.toResponseComSaldo(material, this.saldoDe(id));
+        return this.materialMapper.toResponse(material);
     }
 
-    public MaterialComSaldoResponseDTO criar(MaterialRequestDTO requestDTO) {
+    public MaterialResponseDTO criar(MaterialRequestDTO requestDTO) {
         var tipoMaterial = this.tipoMaterialRepository.findById(requestDTO.tipoMaterialId()).orElseThrow(() -> new RecursoNaoEncontradoException("Tipo Material não encontrado!"));
 
         if (this.materialRepository.existsByNomeIgnoreCaseAndUnidadeMedida(requestDTO.nome().trim(), requestDTO.unidadeMedida())) {
@@ -64,12 +48,10 @@ public class MaterialService {
 
         var material = this.materialRepository.save(materialMapper.toEntity(requestDTO, tipoMaterial));
 
-        // Material recém-cadastrado nunca tem movimentação, então o saldo é zero. Não vale
-        // uma consulta ao banco para descobrir isso.
-        return this.materialMapper.toResponseComSaldo(material, 0.0);
+        return this.materialMapper.toResponse(material);
     }
 
-    public MaterialComSaldoResponseDTO atualizar(Long id, MaterialUpdateRequestDTO requestDTO) {
+    public MaterialResponseDTO atualizar(Long id, MaterialUpdateRequestDTO requestDTO) {
         var material = this.materialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Material não encontrado!"));
 
         // R3 no editar: a unidade de medida não muda, então a checagem usa a do próprio material.
@@ -80,18 +62,12 @@ public class MaterialService {
 
         this.materialMapper.updateEntity(material, requestDTO);
 
-        return this.materialMapper.toResponseComSaldo(this.materialRepository.save(material), this.saldoDe(id));
+        return this.materialMapper.toResponse(this.materialRepository.save(material));
     }
 
     public void remover(Long id) {
         var material = this.materialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Material não encontrado!"));
 
         this.materialRepository.delete(material);
-    }
-
-    // O saldo de um material só: aqui a consulta por id é a mais direta, porque não há
-    // lista para percorrer. A query devolve 0 quando não existe movimentação (COALESCE).
-    private Double saldoDe(Long materialId) {
-        return this.movimentacaoResiduoRepository.somarQuantidadePorMaterial(materialId);
     }
 }

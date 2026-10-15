@@ -2,8 +2,7 @@ package api.dto;
 
 import api.enums.TipoMovimentacaoResiduo;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
 
 // CAMADA: DTO
 // RESPONSABILIDADE: o que a API devolve sobre uma movimentação de resíduo.
@@ -24,10 +23,6 @@ public record MovimentacaoResiduoResponseDTO(
         Double quantidade,
 
         @Schema(description = "A descrição da movimentação", example = "Entrada referente à sobra da produção")
-        String descricao,
-
-        @Schema(description = "Quando a movimentação foi registrada. Definida pela API, não pelo cliente",
-                example = "2026-10-15T14:23:11")
-        LocalDateTime criadoEm
+        String descricao
 ) {
 }
