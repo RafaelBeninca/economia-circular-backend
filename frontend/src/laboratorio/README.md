@@ -1,0 +1,13 @@
+# Laboratório de regras
+
+Camada didática recolhida na tela de material. `LaboratorioRegras` recebe `material`, `aoConferir(aviso)` e opcionalmente `aoExecutar(enviando)` para bloquear atualização e formulário de movimentação enquanto o POST estiver em curso. A página é reinicializada com a chave do ID ao trocar de material, e preserva o aviso durante o GET de conferência, inclusive quando desmonta o laboratório durante carregamento. Se mantiver o componente montado, um novo objeto material após GET libera outra preparação. A conferência atualiza material/extrato; no caso R3, a mensagem lembra conferir a lista de materiais no painel.
+
+`cenarios.ts` guarda um snapshot ao preparar. R1 usa saída negativa com módulo finito estritamente maior que o saldo consultado; o limite `Number.MAX_VALUE` não permite preparar essa demonstração. R2 usa entrada -1, não zero, para alcançar o Service. R3 copia nome, unidade, preço e tipo. Cadastro legado com preço não positivo impede esse cenário para não reprovar o DTO antes da regra. O saldo pode mudar no servidor e a normalização de nome no Service pode afetar a duplicidade: uma aceitação inesperada é apresentada como tal.
+
+Selecionar, preparar ou abrir não envia HTTP. Somente **Executar tentativa** chama `api.criarMovimentacao` ou `api.criarMaterial`, que passa pelo cliente central e registra nos bastidores. Demo permite revisar JSON, com execução desabilitada e sem erros simulados. Cada resultado exige preparação explícita para outro envio; ref bloqueia clique duplicado. Recolher não cancela POST.
+
+Somente erro HTTP 400, ErroDTO.status 400, campos vazios e mensagem da regra correspondente é reconhecido como demonstração. R1 reconhece a estrutura numérica exata produzida pelo Java; R2 e R3 usam suas mensagens integrais. Erros de campo, outro 400, 404 e outras falhas não contam como aprovação. Status e corpo reais são observados no evento do cliente central e exibidos sem recriação, inclusive em falhas de contrato. Os bastidores conservam o mesmo registro HTTP.
+
+Aceite 2xx é inesperado e pode ter persistido. Rede, timeout, cancelamento, resposta inválida ou 5xx também deixam a escrita incerta. Não há repetição nem exclusão automática. **Conferir dados** chama o pai com aviso que preserva ID quando conhecido. Novos envios ficam bloqueados até chegar novo snapshot de material; o operador revisa os dados antes de preparar novamente. A ausência de idempotência no servidor impede garantias entre abas ou reaberturas.
+
+Os testes usam respostas controladas e não validam a execução de Spring Boot, PostgreSQL ou regras Java. O backend real permanece sem executar nesta máquina, por decisão de manter o requisito Java 25.

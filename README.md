@@ -188,7 +188,7 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 
 ## Frontend
 
-A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. O painel de saldos e o extrato consultam a fonte configurada: **demonstração**, padrão sem HTTP, ou **API**, por `VITE_MODO_DADOS=api` e `VITE_API_URL`. A origem aparece na interface; erros de rede não ativam exemplos. Os bastidores mostram as requisições reais. No modo API, os formulários registram entradas e saídas e consultam novamente saldo e extrato; no modo demo, permitem explorar sem gravar. Cadastros e laboratório de regras serão etapas posteriores.
+A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. O painel de saldos e o extrato consultam a fonte configurada: **demonstração**, padrão sem HTTP, ou **API**, por `VITE_MODO_DADOS=api` e `VITE_API_URL`. A origem aparece na interface; erros de rede não ativam exemplos. Os bastidores mostram as requisições reais. No modo API, os formulários registram entradas e saídas e consultam novamente saldo e extrato; no modo demo, permitem explorar sem gravar. O cadastro de materiais/tipos fica no painel; o laboratório R1/R2/R3 fica recolhido no detalhe do material e só envia tentativas por ação explícita. No modo demo, essas funções permitem explorar sem gravar nem simular respostas HTTP.
 
 ```bash
 cd frontend

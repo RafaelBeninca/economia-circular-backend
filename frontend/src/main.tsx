@@ -7,6 +7,8 @@ import "./design-system/index.css";
 import "./app.css";
 import "./integracao.css";
 import "./movimentacao.css";
+import "./cadastros/cadastros.css";
+import "./laboratorio/laboratorio.css";
 
 // CAMADA: Inicialização
 // RESPONSABILIDADE: montar o React e habilitar a navegação entre as duas telas.

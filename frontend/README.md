@@ -50,6 +50,22 @@ Se houver falha de rede, tempo limite, resposta inválida ou erro 5xx, a gravaç
 
 No modo **demo**, os formulários podem ser explorados, mas o botão de confirmação fica desabilitado. Nada é persistido ou acrescentado aos exemplos, e não surgem registros HTTP artificiais nos bastidores.
 
+## Cadastrar material e tipo
+
+No painel, **Novo material** abre o cadastro sem adicionar telas de administração ao menu. Informe nome, preço por unidade maior que zero, unidade de medida e tipo. Preço aceita vírgula ou ponto decimal sem separador de milhar. O limite de 255 caracteres dos nomes acompanha as entidades; a API decide a duplicidade de nome/unidade (R3).
+
+Os tipos são consultados ao abrir. A criação de tipo acontece no mesmo diálogo; depois da confirmação da API, o tipo fica disponível e selecionado no formulário de material, preservando o preenchimento. Carregamento, falha e lista sem tipos têm estados próprios. Não há edição nem exclusão de cadastros nesta interface.
+
+Depois do material confirmado, o diálogo fecha e o painel consulta a lista novamente, mantendo a confirmação mesmo se a consulta falhar. Sem soma ou cadastro otimista no navegador. Falhas preservam os campos, e resultados incertos impedem repetir a gravação naquela abertura: confira os dados antes de tentar outro envio. No modo demo, tipos vêm dos exemplos e os formulários são apenas exploráveis, sem POST ou persistência.
+
+## Laboratório de regras
+
+No detalhe de um material, abra **Laboratório de regras**. Os cenários preparam uma saída maior que o saldo consultado (R1), uma movimentação com sinal incompatível (R2) ou um cadastro com nome/unidade já existentes (R3). Antes do envio, o laboratório mostra o método, a rota, o JSON e a resposta esperada. Abrir ou selecionar um cenário não envia HTTP; **Executar tentativa** é uma ação explícita.
+
+As tentativas usam a API configurada. O frontend só identifica uma rejeição compatível com a regra quando recebe HTTP 400, a mensagem correspondente e a lista de campos vazia. Um erro de DTO, 404, indisponibilidade ou falha de rede não demonstra a regra. A resposta real fica no laboratório e nos bastidores; os caminhos por camadas continuam sendo explicações declaradas.
+
+Uma tentativa pode ser aceita caso os dados mudem ou o servidor se comporte de outra forma. Aceites inesperados e resultados incertos não são apresentados como sucesso da demonstração. Nenhum registro é excluído automaticamente; confira os dados antes de outra tentativa. O laboratório não substitui idempotência nem testes de integração Java. No modo demo, somente a preparação fica disponível, sem simular respostas 400.
+
 ## Bastidores
 
 O botão Bastidores abre as últimas 50 requisições concluídas nesta visita, com método, rota, status, tempo, corpo enviado e resposta. Cancelamento, tempo limite, falha de rede e erro HTTP são distinguidos. O histórico fica apenas em memória e pode ser limpo.
@@ -66,11 +82,13 @@ As camadas e regras listadas são **explicações declaradas a partir do código
 | `src/components/`    | Componentes React compartilhados                                        |
 | `src/pages/`         | Painel de saldos e detalhe do material                                  |
 | `src/formularios/`   | Diálogo e preparação do DTO de entrada/saída                             |
+| `src/cadastros/`     | Cadastro de material e criação de tipos no mesmo diálogo                 |
+| `src/laboratorio/`   | Preparação e leitura das tentativas didáticas R1/R2/R3                    |
 | `src/demo/`          | Exemplos usados somente pelo modo demo                                  |
 | `src/bastidores/`    | Captura em memória e apresentação das requisições                       |
 | `tests/`             | Testes do transporte HTTP, configuração e formato das respostas         |
 
-Toda requisição passa por `src/api/client.ts`. O catálogo contém as 14 rotas existentes; o serviço já tem operações de leitura e escrita tipadas, com registro de movimentações disponível; os cadastros ainda serão implementados. O saldo vem da API; o valor em estoque é calculado na apresentação.
+Toda requisição passa por `src/api/client.ts`. O catálogo contém as 14 rotas existentes; o serviço já tem operações de leitura e escrita tipadas, com registro de movimentações, criação de materiais/tipos e tentativas do laboratório disponíveis. O saldo vem da API; o valor em estoque é calculado na apresentação.
 
 Comentários de camada e responsabilidade acompanham o código. Componentes consomem tokens semânticos; valores brutos de cor ficam em `design-system/tokens/`. O favicon usa a paleta do projeto.
 
@@ -78,7 +96,7 @@ Comentários de camada e responsabilidade acompanham o código. Componentes cons
 
 Os testes automatizados iniciam um servidor HTTP controlado em porta aleatória e exercitam requisições reais do cliente. Eles verificam serialização, consulta, respostas JSON, `204`, erros `400`/`404`, resposta incompatível, indisponibilidade, tempo limite e cancelamento. **Não iniciam nem validam o Spring Boot, o PostgreSQL ou as regras de negócio Java.**
 
-Os testes de movimentação verificam decimais, sinal do DTO, campos obrigatórios, limite de descrição, erros por campo, resultado incerto e o POST pelo cliente central. A revisão no navegador usa um servidor HTTP controlado, incluindo falha da consulta posterior à gravação. Isso não comprova as regras Java. A integração com o backend real continua pendente em um ambiente com Java 25. Cadastros e laboratório de regras serão etapas posteriores.
+Os testes de movimentação verificam decimais, sinal do DTO, campos obrigatórios, limite de descrição, erros por campo, resultado incerto e o POST pelo cliente central. A revisão no navegador usa um servidor HTTP controlado, incluindo falha da consulta posterior à gravação. Isso não comprova as regras Java. A integração com o backend real continua pendente em um ambiente com Java 25. Cadastros e laboratório foram implementados no frontend. Seus testes e a revisão com um servidor controlado não comprovam a execução das regras no Java real.
 
 ## Publicação futura na Vercel
 

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { CadastroMaterial } from "../cadastros/CadastroMaterial";
+import type { MaterialComSaldoResponseDTO } from "../api/tipos";
 import { EstadoVazio } from "../components/EstadoVazio";
 import { Icone } from "../components/Icone";
 import { consultas } from "../api/consultas";
@@ -9,26 +11,46 @@ import { moeda, normalizar, quantidade, unidades } from "../formatacao";
 
 // CAMADA: Página
 // RESPONSABILIDADE: apresentar saldo e valor dos resíduos, agrupados por tipo.
-// REGRAS: valor exibido = saldo × preço por unidade; a API será a fonte do saldo.
-// SITUAÇÃO: dados da fonte configurada; busca e filtro permanecem locais
+// REGRAS: valor exibido = saldo × preço por unidade; o saldo e os cadastros confirmados vêm da API.
+// SITUAÇÃO: consulta de saldos e cadastro discreto de materiais/tipos
 const carregarMateriais = (signal: AbortSignal) =>
   consultas.listarMateriais(signal);
 
 export function PainelSaldos() {
   // Atualizar exemplos é local; só o modo API gera uma requisição real.
+  const [cadastroAberto, setCadastroAberto] = useState(false);
+  const [cadastroConfirmado, setCadastroConfirmado] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
   const [categoriaId, setCategoriaId] = useState("");
   const { dados, carregando, erro, recarregar } = useConsulta(
     "materiais",
     carregarMateriais,
   );
+  const avisoCadastro = cadastroConfirmado ? (
+    <div className="ec-movement-success" role="status">
+      {cadastroConfirmado}
+      {carregando && " Atualizando a lista de materiais…"}
+      {erro && " A consulta da lista falhou. Tente consultar novamente; o cadastro já foi confirmado."}
+    </div>
+  ) : null;
+  function aoCadastrar(material: MaterialComSaldoResponseDTO) {
+    setCadastroAberto(false);
+    setCadastroConfirmado(`Material “${material.nome}” cadastrado com sucesso.`);
+    setBusca("");
+    setCategoriaId("");
+    // A confirmação pertence ao POST. A lista atualizada vem de outro GET.
+    recarregar();
+  }
   if (carregando || erro || !dados)
     return (
-      <EstadoConsulta
-        carregando={carregando}
-        erro={erro}
-        aoTentarNovamente={recarregar}
-      />
+      <>
+        {avisoCadastro}
+        <EstadoConsulta
+          carregando={carregando}
+          erro={erro}
+          aoTentarNovamente={recarregar}
+        />
+      </>
     );
   const materiais = dados;
   const categorias = [
@@ -76,20 +98,26 @@ export function PainelSaldos() {
 
   return (
     <>
-      <div className="ec-page-heading">
+      {avisoCadastro}
+      <div className="ec-page-heading ec-stock-heading">
         <div>
           <span className="ec-eyebrow">VISÃO GERAL DO ESTOQUE</span>
           <h1>Painel de saldos</h1>
           <p>Saiba o que você tem. Encontre o valor de cada sobra.</p>
         </div>
-        <button
-          className="ec-icon-button ec-refresh"
-          onClick={recarregar}
-          aria-label="Atualizar saldos"
-          title="Atualizar saldos"
-        >
-          <Icone nome="ciclo" width="23" height="23" />
-        </button>
+        <div className="ec-page-actions">
+          <button className="ec-button ec-button-secondary" onClick={() => setCadastroAberto(true)}>
+            Novo material
+          </button>
+          <button
+            className="ec-icon-button ec-refresh"
+            onClick={recarregar}
+            aria-label="Atualizar saldos"
+            title="Atualizar saldos"
+          >
+            <Icone nome="ciclo" width="23" height="23" />
+          </button>
+        </div>
       </div>
       <section className="ec-overview" aria-labelledby="valor-estoque">
         <div className="ec-overview-value">
@@ -309,6 +337,9 @@ export function PainelSaldos() {
           </p>
         </div>
       </section>
+      {cadastroAberto && (
+        <CadastroMaterial aoFechar={() => setCadastroAberto(false)} aoCadastrar={aoCadastrar} />
+      )}
     </>
   );
 }

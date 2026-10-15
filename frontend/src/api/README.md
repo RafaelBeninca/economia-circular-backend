@@ -13,3 +13,5 @@
 Para adicionar uma rota real, atualize contrato, tipos, validação, catálogo e operação. Componentes continuam usando a camada de consulta, sem chamar `fetch` diretamente.
 
 Os formulários de entrada e saída chamam `api.criarMovimentacao`. O operador informa uma quantidade positiva; o adaptador em `../formularios/movimentacao.ts` aplica o sinal do contrato. Após o POST confirmado, saldo e extrato são consultados novamente. Nenhuma falha provoca repetição automática de escrita; resultados incertos exigem conferir o extrato antes de tentar outro registro.
+
+O cadastro usa `listarTipos`, `criarTipo` e `criarMaterial`, preservando as confirmações dos POSTs independentemente dos GETs seguintes. O laboratório chama as mesmas operações tipadas para enviar DTOs deliberadamente inválidos por ação explícita. Apenas um 400 com mensagem compatível e sem erros de campo demonstra a rejeição esperada. Aceites inesperados ou falhas incertas não provocam exclusão, reversão ou repetição automática. Os exemplos do modo demo não geram respostas HTTP artificiais.

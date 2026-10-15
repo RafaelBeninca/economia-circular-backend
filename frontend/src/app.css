@@ -1226,3 +1226,20 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* As ações raras de cadastro permanecem junto do painel, sem um menu extra. */
+.ec-page-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ec-space-2);
+  flex-shrink: 0;
+}
+@media (max-width: 560px) {
+  .ec-stock-heading {
+    flex-wrap: wrap;
+  }
+  .ec-stock-heading .ec-page-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

@@ -4,6 +4,7 @@ import { EstadoVazio } from "../components/EstadoVazio";
 import { Icone } from "../components/Icone";
 import { ambiente } from "../ambiente";
 import { FormularioMovimentacao } from "../formularios/FormularioMovimentacao";
+import { LaboratorioRegras } from "../laboratorio/LaboratorioRegras";
 import type { MovimentacaoResiduoResponseDTO, TipoMovimentacaoResiduo } from "../api/tipos";
 import { consultas, ehMaterialNaoEncontrado } from "../api/consultas";
 import { useConsulta } from "../hooks/useConsulta";
@@ -22,6 +23,8 @@ export function Material() {
 function PaginaMaterial({ id }: { id: string | undefined }) {
   const [tipoRegistro, setTipoRegistro] = useState<TipoMovimentacaoResiduo | null>(null);
   const [confirmacao, setConfirmacao] = useState<string | null>(null);
+  const [avisoLaboratorio, setAvisoLaboratorio] = useState<string | null>(null);
+  const [laboratorioExecutando, setLaboratorioExecutando] = useState(false);
   const carregar = useCallback(
     (signal: AbortSignal) =>
       consultas.consultarMaterial(
@@ -41,16 +44,33 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
       {erro && ' A consulta do saldo e do extrato falhou. Tente consultar novamente; o registro já foi confirmado.'}
     </div>
   ) : null;
+  const avisos = (
+    <>
+      {avisoConfirmacao}
+      {avisoLaboratorio && (
+        <div className="ec-demo-notice" role="status">
+          <Icone nome="info" />
+          <p>{avisoLaboratorio} {carregando ? "Consultando os dados atuais…" : erro ? "A consulta falhou. Tente consultar novamente antes de outro envio." : "Dados consultados novamente. Confira o extrato e a lista de materiais no painel."}</p>
+        </div>
+      )}
+    </>
+  );
+  function conferirLaboratorio(aviso: string) {
+    setConfirmacao(null);
+    setAvisoLaboratorio(aviso);
+    recarregar();
+  }
   function aoConfirmar(registro: MovimentacaoResiduoResponseDTO) {
+    setAvisoLaboratorio(null);
     setTipoRegistro(null);
     setConfirmacao(`${registro.tipoMovimentacaoResiduo === "ENTRADA" ? "Entrada" : "Saída"} de ${quantidade(Math.abs(registro.quantidade))} ${unidades[registro.material.unidadeMedida]} registrada com sucesso.`);
     recarregar();
   }
   if (carregando)
-    return <>{avisoConfirmacao}<EstadoConsulta carregando erro={null} aoTentarNovamente={recarregar} /></>;
+    return <>{avisos}<EstadoConsulta carregando erro={null} aoTentarNovamente={recarregar} /></>;
   if (ehMaterialNaoEncontrado(erro))
     return (
-      <>{avisoConfirmacao}<EstadoVazio
+      <>{avisos}<EstadoVazio
         titulo="Material não encontrado"
         acao={
           <Link className="ec-button ec-button-primary" to="/">
@@ -63,7 +83,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
     );
   if (erro || !dados)
     return (
-      <>{avisoConfirmacao}<EstadoConsulta
+      <>{avisos}<EstadoConsulta
         carregando={false}
         erro={erro}
         aoTentarNovamente={recarregar}
@@ -72,7 +92,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
   const { material, movimentacoes } = dados;
   return (
     <>
-      {avisoConfirmacao}
+      {avisos}
       <Link className="ec-back-link" to="/">
         <Icone nome="voltar" width="17" height="17" />
         Voltar ao painel
@@ -143,6 +163,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
           <div className="ec-movement-actions">
             <button
               className="ec-button ec-button-primary"
+              disabled={laboratorioExecutando}
               onClick={() => setTipoRegistro("ENTRADA")}
             >
               <Icone nome="entrada" width="17" height="17" />
@@ -150,6 +171,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
             </button>
             <button
               className="ec-button ec-button-secondary"
+              disabled={laboratorioExecutando}
               onClick={() => setTipoRegistro("SAIDA")}
             >
               <Icone nome="saida" width="17" height="17" />
@@ -158,7 +180,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
           </div>
         </div>
         <div className="ec-statement-refresh">
-          <button className="ec-button ec-button-secondary" onClick={recarregar}>Atualizar extrato</button>
+          <button className="ec-button ec-button-secondary" onClick={recarregar} disabled={laboratorioExecutando}>Atualizar extrato</button>
         </div>
         <div className="ec-movement-list">
           {movimentacoes.length === 0 && (
@@ -209,6 +231,7 @@ function PaginaMaterial({ id }: { id: string | undefined }) {
           ))}
         </div>
       </section>
+      <LaboratorioRegras material={material} aoConferir={conferirLaboratorio} aoExecutar={setLaboratorioExecutando} />
       {tipoRegistro && <FormularioMovimentacao material={material} tipo={tipoRegistro} aoFechar={() => setTipoRegistro(null)} aoConfirmar={aoConfirmar} />}
     </>
   );
