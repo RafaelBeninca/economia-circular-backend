@@ -26,7 +26,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         // TROQUE: nome da API do grupo, em destaque no Swagger UI.
-                        .title("Projeto Final - NOME DO PROJETO")
+                        .title("Projeto Final - Economia Circular")
                         // Versão do contrato -- aqui, a etapa em que ele foi publicado.
                         .version("Etapa 1")
                         // TROQUE: tema, integrantes e o que a API faz (aceita Markdown).

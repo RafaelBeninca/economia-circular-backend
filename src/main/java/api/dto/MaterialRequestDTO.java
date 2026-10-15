@@ -1,0 +1,33 @@
+package api.dto;
+
+import api.enums.TipoUnidadeMedida;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
+// CAMADA: DTO
+// RESPONSABILIDADE: o que o cliente envia para cadastrar um material.
+// SITUAÇÃO: implementada
+@Schema(description = "Dados para criar um material")
+public record MaterialRequestDTO(
+
+        @Schema(description = "Nome do material", example = "Metal")
+        @NotBlank(message = "Nome não pode ser vazio!")
+        String nome,
+
+        @Schema(description = "Preço que o material custa por unidade", example = "1234.56")
+        @NotNull(message = "O preço por unidade não pode ser vazio!")
+        @Positive(message = "O preço deve ser maior que zero!")
+        Double precoPorUnidade,
+
+        @Schema(description = "A unidade de medida que o material é mensurado", example = "QUILO")
+        @NotNull(message = "Unidade de medida não pode ser vazio!")
+        TipoUnidadeMedida unidadeMedida,
+
+        @Schema(description = "O ID do tipo de material que o material pertence", example = "1")
+        @NotNull(message = "Tipo de material não pode ser vazio!")
+        Long tipoMaterialId
+) {
+}

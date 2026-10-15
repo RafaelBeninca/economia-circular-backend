@@ -1,24 +1,6 @@
-# Economia Circular
-> **Este é o ponto de partida do projeto do grupo.** Apague este bloco antes de entregar.
->
-> **Objetivo do exercício:** planejar e organizar um backend antes de programar tudo. O grupo cria o problema e as regras de negócio, desenha o sistema, monta a estrutura de todas as entidades, faz a API funcionar com as regras implementadas e documenta tudo neste README. O enunciado completo está em `Aula 10-11/README.md`, no repositório da disciplina.
->
-> **O que fazer, na ordem:**
->
-> 1. Copie esta pasta inteira para fora do repositório da disciplina, com o nome do projeto, e publique no GitHub. Os comandos estão no enunciado (seção "Como começar pelo template").
-> 2. Procure por `TROQUE` no projeto (`pom.xml`, `docker-compose.yml`, `OpenApiConfig.java`) e coloque o nome do projeto.
-> 3. Preencha a seção [O problema](#o-problema) deste README: o problema que o grupo criou e as regras de negócio.
-> 4. Preencha `docs/modelo-de-dominio.md` e `docs/contrato-da-api.md`.
-> 5. Crie as tabelas e as classes de todas as entidades. O passo a passo está em [src/main/java/api/README.md](src/main/java/api/README.md).
-> 6. Faça a API simples e implemente as regras de negócio.
-> 7. Termine este README: troque tudo o que está entre `{{ }}` e apague o que está marcado com *(exemplo)*. Mantenha as seções e a ordem.
-> 8. Abra o repositório no GitHub, leia o README como quem nunca viu o projeto e preencha `docs/autoavaliacao.md`.
->
-> Na primeira vez que a API sobe, antes de existir tabela e rota, o Flyway avisa `No migrations found` e o Swagger UI mostra `No operations defined in spec!`. É o esperado.
->
-> Os exemplos marcados com *(exemplo)* são de uma biblioteca. O projeto completo dela está em `Aula 10-11/exemplo-biblioteca`.
+# API de Economia Circular
 
-O sistema tem como objetivo gerenciar o controle de resíduos de fábricas, com registro de materiais e suas propriedades, e também com monitoramento de entrada e saída de destino.
+API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço agregado, para quem gerencia os resíduos da produção.
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -38,32 +20,31 @@ Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1
 
 | Nome | GitHub |
 |---|---|
+| Gustavo de Rezende Biava | [@GustavoBiava](https://github.com/GustavoBiava) e [@GustavoBiavaProcer](https://github.com/GustavoBiavaProcer) |
+| Lucas Siqueira Sosa | [@LucasSosa](https://github.com/lucassosa) |
 | Rafael Avila Benincá | [@RafaelBeninca](https://github.com/RafaelBeninca) |
-| Gustavo de Rezende Biava | [@GustavoBiava](https://github.com/GustavoBiava) |
-| Lucas Siqueira Sosa | [@lucasssosa](https://github.com/lucasssosa) |
 
 ## O problema
 
 **Tema sorteado:** Sustentabilidade e Meio Ambiente
 
-O problema origina a partir da falta de controle na gestão de estoques em indústrias responsáveis pela produção de peças, que consequentemente resulta no desperdício de materiais, afetando gravemente os custos. Com esse sistema, é possível acompanhar mais facilmente o processo de entrada e saída dos resíduos.
+Os resíduos gerados na produção não têm gestão, onde ninguém sabe ao certo a quantidade que sobra de cada material, o valor que esse resíduo carrega nem para onde ele vai. Sem esse controle, o que poderia ser reaproveitado ou vendido se perde. O sistema registra cada material com sua unidade de medida e seu preço, e cada entrada e saída de resíduo, mantendo o saldo de cada material confiável e rastreável.
 
 **Quem usa o sistema:**
 
 | Quem | O que faz no sistema |
 |---|---|
-| Responsável pelo estoque | Cadastra materiais, registra entradas e saídas de resíduos |
-| Administrador do sistema | Gerencia sistema e seus usuários |
+| Operador de produção | Cadastra tipos de materiais e materiais, e registra as entradas e saídas de resíduos |
 
-**Regras de negócio.** No mínimo 3, criadas pelo grupo a partir do problema: o que o sistema precisa garantir ou impedir. Precisam atender à necessidade do tema e estar implementadas no código. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
+**Regras de negócio.** O que o sistema precisa garantir ou impedir. O que só confere formato (campo obrigatório, número positivo) é validação do DTO, não regra de negócio.
 
 | # | Regra | Onde está no código | Rota que usa |
 |---|---|---|---|
-| R1 *(exemplo)* | Um leitor não pode ter mais de 3 empréstimos em aberto | `EmprestimoService` | `POST /emprestimos` |
-| R2 | ... | ... | ... |
-| R3 | ... | ... | ... |
+| R1 | A saída de um material não pode ser maior que o saldo dele (a soma de todas as suas movimentações) | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
+| R2 | Uma movimentação de saída precisa ter quantidade negativa e uma de entrada, quantidade positiva | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
+| R3 | Não pode existir mais de um material com o mesmo nome e a mesma unidade de medida | `MaterialService` | `POST /materiais` |
 
-**Fora do escopo:** {{o que o grupo decidiu não fazer, para o projeto caber no semestre}}
+**Fora do escopo:** logística de transporte de resíduos e gerenciamento de destinos homologados.
 
 ## Tecnologias
 
@@ -79,19 +60,21 @@ O problema origina a partir da falta de controle na gestão de estoques em indú
 
 A API é organizada em camadas. Uma requisição entra pelo Controller, passa pelo Service, que aplica as regras de negócio, e chega ao banco pelo Repository; a resposta faz o caminho de volta. O Mapper converte DTO em entidade e entidade em DTO.
 
-**Mapa da estrutura.** Uma linha por entidade, todas as do modelo. Em cada célula, a classe e a situação: **pronta**, **implementada** (já tem lógica), **em parte** (só uma parte das rotas) ou **montada** (criada, ligada às outras, ainda sem lógica).
+**Mapa da estrutura.** Uma linha por entidade. Em cada célula, a classe e a situação.
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| Livro *(exemplo)* | `V1__criar_livros.sql`, pronta | `Livro`, pronta | `LivroRepository`, pronto | `LivroRequestDTO`, `LivroResponseDTO`, prontos | `LivroMapper`, implementado | `LivroService`, implementado | `LivroController`, implementado |
-| ... | ... | ... | ... | ... | ... | ... | ... |
+| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
+| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
+| MovimentacaoResiduo | `V5__criar_movimentacoes_residuos.sql`, pronta (enum em `V4__criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
 
 ## Entidades
 
 | Entidade | O que representa | Como se relaciona |
 |---|---|---|
-| Livro *(exemplo)* | Um exemplar do acervo que pode ser emprestado | Aparece em vários empréstimos |
-| ... | ... | ... |
+| TipoMaterial | A categoria de um material (por exemplo, Metal ou Biológico) | Classifica vários materiais |
+| Material | Um resíduo controlado, com unidade de medida e preço por unidade | Pertence a um tipo de material e aparece em várias movimentações |
+| MovimentacaoResiduo | Uma entrada ou saída de um material | Pertence a um material |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
@@ -100,45 +83,66 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 ### As que já funcionam
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
-|---|---|---|---|---|---|
-| `POST` *(exemplo)* | `/livros` | Cadastra um livro | Nenhuma | `201` | `400` |
-| `POST` *(exemplo)* | `/emprestimos` | Registra um empréstimo | R1 e R2 | `201` | `400`, `404` |
-| ... | ... | ... | ... | ... | ... |
+|---|---|---|---|---------|---|
+| `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200`   | Nenhum |
+| `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200`   | `404` |
+| `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201`   | `400` |
+| `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | `204` | `400`, `404` |
+| `GET` | `/materiais` | Lista os materiais | Nenhuma | `200`   | Nenhum |
+| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200`   | `404` |
+| `POST` | `/materiais` | Cadastra um material | R3 | `201`   | `400`, `404` |
+| `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | `204` | `400`, `404` |
+| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200`   | Nenhum |
+| `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200`   | `404` |
+| `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | R1 e R2 | `201`   | `400`, `404` |
+| `DELETE` | `/movimentacoesResiduos/{id}` | Remove uma movimentação | Nenhuma | `204` | `404` |
 
-Exemplo de requisição *(exemplo: troque por uma rota do grupo)*:
+Exemplo de requisição:
 
 ```http
-POST /livros
+POST /movimentacoesResiduos
 Content-Type: application/json
 
 {
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5"
+  "materialId": 1,
+  "movimentacaoResiduo": "SAIDA",
+  "quantidade": -15,
+  "descricao": "Saída referente à venda do material para terceiros"
 }
 ```
 
-Resposta, `201 Created`:
+Resposta, `201 OK`:
 
 ```json
 {
-  "id": 1,
-  "titulo": "Dom Casmurro",
-  "isbn": "978-85-359-0277-5",
-  "disponivel": true
+  "id": 2,
+  "material": {
+    "id": 1,
+    "nome": "Sucata de alumínio",
+    "unidadeMedida": "QUILO",
+    "precoPorUnidade": 8.5,
+    "tipoMaterial": {
+      "id": 1,
+      "nome": "Metal"
+    }
+  },
+  "tipoMovimentacaoResiduo": "SAIDA",
+  "quantidade": -15,
+  "descricao": "Saída referente à venda do material para terceiros"
 }
 ```
 
 ### Erros
 
-Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada *(exemplo)*:
+Todo erro sai no mesmo formato. Este é o `400` de uma regra de negócio violada (R1):
 
 ```json
 {
   "status": 400,
   "erro": "Bad Request",
-  "mensagem": "R2: o livro já está emprestado",
-  "caminho": "/emprestimos",
-  "timestamp": "2026-10-06T19:30:00",
+  "mensagem": "Saída de 15.0 excede o saldo disponível de 10.0 do material!",
+  "caminho": "/movimentacoesResiduos",
+  "timestamp": "2026-10-14T19:30:00",
   "campos": []
 }
 ```
@@ -147,11 +151,11 @@ Um campo inválido também devolve `400`, com a lista `campos` dizendo qual camp
 
 ### As planejadas
 
-Estão no contrato, mas ainda não respondem.
+Estão previstas, mas ainda não respondem.
 
 | Recurso | O que vai fazer |
 |---|---|
-| ... | ... |
+| Não há | Atualização (`PUT`) não faz parte desta etapa |
 
 O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-api.md](docs/contrato-da-api.md).
 
@@ -160,8 +164,8 @@ O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-ap
 Pré-requisitos: JDK 25, Docker Desktop aberto e Git.
 
 ```bash
-git clone https://github.com/{{usuario}}/{{repositorio}}.git
-cd {{repositorio}}
+git clone https://github.com/RafaelBeninca/economia-circular-backend.git
+cd economia-circular-backend
 
 docker compose up -d          # sobe o PostgreSQL na porta 5437
 ./mvnw spring-boot:run        # Windows: .\mvnw.cmd spring-boot:run
@@ -182,11 +186,11 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 
 | Parte | Situação |
 |---|---|
-| Desenho | {{ex.: completo: problema e regras neste README, modelo e contrato em docs/}} |
-| Estrutura | {{ex.: as 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller}} |
-| API e regras | {{ex.: as rotas de livros funcionam; R1, R2 e R3 estão implementadas}} |
+| Desenho | Completo: problema e regras neste README, modelo e contrato em `docs/` |
+| Estrutura | As 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller |
+| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam; R1, R2 e R3 estão implementadas |
 
-**Ainda não funciona:** {{as rotas planejadas que ainda não respondem}}
+**Ainda não funciona:** nada planejado nesta etapa está pendente. A atualização (`PUT`) não foi implementada.
 
 ## Documentação
 
