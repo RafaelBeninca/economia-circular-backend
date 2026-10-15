@@ -13,6 +13,7 @@ Uma pasta por camada. Cada uma tem um `README.md` explicando o que fazer ali.
 | [mapper/](mapper) | A conversão entre DTO e entidade | `LivroMapper` |
 | [repository/](repository) | A conversa com o banco | `LivroRepository` |
 | [model/](model) | As entidades | `Livro` |
+| [enums/](enums) | Os valores fixos usados pelas entidades e pelos DTOs (unidades de medida, tipos de movimentação) | Não se aplica |
 | [dto/](dto) | O JSON que entra e o que sai | `LivroRequestDTO`, `LivroResponseDTO` |
 | [config/](config) | Configuração | Não se aplica |
 

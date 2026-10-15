@@ -64,8 +64,8 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
-| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
+| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, `TipoMaterialUpdateRequestDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
+| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, `MaterialUpdateRequestDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
 | MovimentacaoResiduo | `V5__criar_movimentacoes_residuos.sql`, pronta (enum em `V4__criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
 
 ## Entidades
@@ -113,7 +113,7 @@ Content-Type: application/json
 }
 ```
 
-Resposta, `201 OK`:
+Resposta, `201 Created`:
 
 ```json
 {
@@ -192,7 +192,7 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 | Estrutura | As 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller |
 | API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam, e `PUT /{id}` edita tipos de materiais e materiais; R1, R2 e R3 estão implementadas |
 
-**Ainda não funciona:** nada planejado nesta etapa está pendente: `PUT` e `DELETE` já estão implementadas.
+**Estado atual:** nada planejado nesta etapa está pendente: `PUT` e `DELETE` já estão implementadas.
 
 ## Documentação
 
