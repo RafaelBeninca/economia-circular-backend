@@ -6,6 +6,7 @@ import { BastidoresProvider } from "./bastidores/BastidoresProvider";
 import "./design-system/index.css";
 import "./app.css";
 import "./integracao.css";
+import "./movimentacao.css";
 
 // CAMADA: Inicialização
 // RESPONSABILIDADE: montar o React e habilitar a navegação entre as duas telas.

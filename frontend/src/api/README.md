@@ -11,3 +11,5 @@
 `eventos.ts` liga o transporte à apresentação sem importar React no cliente. Falhas de observadores não mudam a resposta de uma requisição.
 
 Para adicionar uma rota real, atualize contrato, tipos, validação, catálogo e operação. Componentes continuam usando a camada de consulta, sem chamar `fetch` diretamente.
+
+Os formulários de entrada e saída chamam `api.criarMovimentacao`. O operador informa uma quantidade positiva; o adaptador em `../formularios/movimentacao.ts` aplica o sinal do contrato. Após o POST confirmado, saldo e extrato são consultados novamente. Nenhuma falha provoca repetição automática de escrita; resultados incertos exigem conferir o extrato antes de tentar outro registro.

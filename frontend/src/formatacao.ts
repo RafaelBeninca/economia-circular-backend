@@ -6,7 +6,8 @@ export const moeda = (valor: number) =>
     valor,
   );
 export const quantidade = (valor: number) =>
-  new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 }).format(valor);
+  // Evita apresentar como zero uma fração positiva aceita no registro.
+  new Intl.NumberFormat("pt-BR", { maximumSignificantDigits: 15 }).format(valor);
 export const unidades = {
   QUILO: "kg",
   METRO: "m",

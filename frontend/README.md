@@ -16,7 +16,7 @@ Abra `http://127.0.0.1:5173`. O servidor usa porta fixa, compatível com as orig
 
 ```bash
 npm run typecheck  # verifica o TypeScript
-npm test           # testa o cliente HTTP com Node 24 e um servidor controlado
+npm test           # testa HTTP, configuração e preparação de movimentações com Node 24
 npm run build      # verifica os tipos e gera dist/
 npm run preview    # serve o build com a porta de desenvolvimento livre
 ```
@@ -34,9 +34,21 @@ VITE_API_URL=http://localhost:8080
 
 Reinicie o servidor Vite após mudar as variáveis. A API precisa estar disponível e permitir a origem do navegador por CORS. Em desenvolvimento, o endereço padrão da API é `http://localhost:8080`; em um build de produção no modo API, uma URL HTTPS explícita é obrigatória.
 
-O modo API consulta `GET /materiais`, `GET /materiais/{id}` e `GET /movimentacoesResiduos?materialId=...`. Busca e filtro por categoria continuam locais. Carregamento, resposta vazia, material inexistente e falhas têm estados próprios e opção de nova tentativa. Uma falha de rede **não** substitui o estoque por exemplos.
+O modo API consulta `GET /materiais`, `GET /materiais/{id}` e `GET /movimentacoesResiduos?materialId=...` e registra movimentações com `POST /movimentacoesResiduos`. Busca e filtro por categoria continuam locais. Carregamento, resposta vazia, material inexistente e falhas têm estados próprios e opção de nova tentativa. Uma falha de rede **não** substitui o estoque por exemplos.
 
 Todas as variáveis `VITE_*` usadas pelo cliente ficam públicas no JavaScript do build. Coloque apenas configuração pública, nunca senhas, tokens ou credenciais. Os arquivos `.env` e `.env.*` locais são ignorados; `.env.example` é versionado. Este comportamento de configuração é documentado pelo [Vite](https://vite.dev/guide/env-and-mode).
+
+## Registrar entradas e saídas
+
+Abra um material e escolha **Registrar entrada** ou **Registrar saída**. Informe uma quantidade positiva e o motivo (até 255 caracteres, conforme a coluna da entidade). Vírgula ou ponto representam decimais; não use separadores de milhar, sinais ou notação científica. Na saída, a interface transforma a quantidade em negativa ao montar o DTO. Não arredonda a quantidade enviada nem limita a saída com o saldo consultado: a API continua responsável por R1/R2. A formatação exibe frações pequenas sem convertê-las visualmente em zero.
+
+O formulário verifica o preenchimento, impede envios simultâneos e preserva os valores quando a API devolve erro. Mensagens gerais e erros de quantidade/descrição do `ErroDTO` aparecem no formulário; o campo derivado `quantidadeDiferenteDeZero` também é associado à quantidade. O diálogo recebe foco ao abrir, retorna ao botão ao cancelar e aceita Escape quando não está enviando. Durante o envio, aguarde a resposta; não há cancelamento ou repetição automática do POST.
+
+Depois da confirmação da API, o formulário fecha e a página consulta novamente saldo e extrato. Não soma localmente o saldo nem inventa uma linha de extrato. Uma falha nessa consulta mantém a confirmação do registro e permite repetir somente os GETs. Ao voltar ao painel, a lista é consultada novamente.
+
+Se houver falha de rede, tempo limite, resposta inválida ou erro 5xx, a gravação pode ter ocorrido. O formulário impede novo envio naquela abertura e orienta fechá-lo e atualizar o extrato antes de tentar outro registro. Ainda não há chave de idempotência na API; a interface não garante deduplicação entre abas, sessões ou envios feitos após reabrir o formulário.
+
+No modo **demo**, os formulários podem ser explorados, mas o botão de confirmação fica desabilitado. Nada é persistido ou acrescentado aos exemplos, e não surgem registros HTTP artificiais nos bastidores.
 
 ## Bastidores
 
@@ -53,11 +65,12 @@ As camadas e regras listadas são **explicações declaradas a partir do código
 | `src/design-system/` | Tokens, base, layout, componentes CSS e utilitários; paleta teal        |
 | `src/components/`    | Componentes React compartilhados                                        |
 | `src/pages/`         | Painel de saldos e detalhe do material                                  |
+| `src/formularios/`   | Diálogo e preparação do DTO de entrada/saída                             |
 | `src/demo/`          | Exemplos usados somente pelo modo demo                                  |
 | `src/bastidores/`    | Captura em memória e apresentação das requisições                       |
 | `tests/`             | Testes do transporte HTTP, configuração e formato das respostas         |
 
-Toda requisição passa por `src/api/client.ts`. O catálogo contém as 14 rotas existentes; o serviço já tem operações de leitura e escrita tipadas, embora a interface de registro e os cadastros ainda não estejam implementados. O saldo vem da API; o valor em estoque é calculado na apresentação.
+Toda requisição passa por `src/api/client.ts`. O catálogo contém as 14 rotas existentes; o serviço já tem operações de leitura e escrita tipadas, com registro de movimentações disponível; os cadastros ainda serão implementados. O saldo vem da API; o valor em estoque é calculado na apresentação.
 
 Comentários de camada e responsabilidade acompanham o código. Componentes consomem tokens semânticos; valores brutos de cor ficam em `design-system/tokens/`. O favicon usa a paleta do projeto.
 
@@ -65,7 +78,7 @@ Comentários de camada e responsabilidade acompanham o código. Componentes cons
 
 Os testes automatizados iniciam um servidor HTTP controlado em porta aleatória e exercitam requisições reais do cliente. Eles verificam serialização, consulta, respostas JSON, `204`, erros `400`/`404`, resposta incompatível, indisponibilidade, tempo limite e cancelamento. **Não iniciam nem validam o Spring Boot, o PostgreSQL ou as regras de negócio Java.**
 
-A integração com o backend Java real ainda precisa ser validada em um ambiente com Java 25. Formulários de movimentação, cadastros e laboratório de regras serão etapas posteriores. Os botões de registro continuam desabilitados e explicados.
+Os testes de movimentação verificam decimais, sinal do DTO, campos obrigatórios, limite de descrição, erros por campo, resultado incerto e o POST pelo cliente central. A revisão no navegador usa um servidor HTTP controlado, incluindo falha da consulta posterior à gravação. Isso não comprova as regras Java. A integração com o backend real continua pendente em um ambiente com Java 25. Cadastros e laboratório de regras serão etapas posteriores.
 
 ## Publicação futura na Vercel
 

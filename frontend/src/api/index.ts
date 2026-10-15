@@ -23,7 +23,7 @@ import type {
 // CAMADA: API
 // RESPONSABILIDADE: oferecer operações tipadas sobre as rotas existentes.
 // REGRAS: toda operação passa pelo cliente central; nenhum fetch vive nas telas.
-// SITUAÇÃO: implementada; formulários usarão as operações de escrita em outra etapa
+// SITUAÇÃO: implementada; formulários de movimentação usam a operação de criação
 const cliente = ambiente.apiUrl
   ? criarClienteApi({
       baseUrl: ambiente.apiUrl,

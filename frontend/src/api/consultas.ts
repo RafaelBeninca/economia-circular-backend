@@ -6,7 +6,7 @@ import { ErroApi } from "./client";
 // CAMADA: Dados da interface
 // RESPONSABILIDADE: escolher a fonte configurada, mantendo exemplos separados de HTTP.
 // REGRAS: nenhum erro de rede ativa demonstração automaticamente.
-// SITUAÇÃO: leituras conectadas; escrita ficará nos formulários posteriores
+// SITUAÇÃO: leituras conectadas; gravação usa diretamente a operação tipada da API
 export class MaterialNaoEncontrado extends Error {
   constructor() {
     super("O material não foi encontrado.");

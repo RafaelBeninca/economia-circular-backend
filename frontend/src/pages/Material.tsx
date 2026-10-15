@@ -1,8 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EstadoVazio } from "../components/EstadoVazio";
 import { Icone } from "../components/Icone";
 import { ambiente } from "../ambiente";
+import { FormularioMovimentacao } from "../formularios/FormularioMovimentacao";
+import type { MovimentacaoResiduoResponseDTO, TipoMovimentacaoResiduo } from "../api/tipos";
 import { consultas, ehMaterialNaoEncontrado } from "../api/consultas";
 import { useConsulta } from "../hooks/useConsulta";
 import { EstadoConsulta } from "../components/EstadoConsulta";
@@ -11,9 +13,15 @@ import { dataHora, moeda, quantidade, unidades } from "../formatacao";
 // CAMADA: Página
 // RESPONSABILIDADE: destacar o saldo de um material e apresentar seu extrato.
 // REGRAS: sinais de entrada/saída são apresentados por rótulo, além da cor.
-// SITUAÇÃO: saldo e extrato da fonte configurada; formulários serão outra etapa
+// SITUAÇÃO: consulta e registro de entradas e saídas, com confirmação da API
 export function Material() {
   const { id } = useParams();
+  // Navegar para outro material descarta o formulário e avisos do anterior.
+  return <PaginaMaterial key={id} id={id} />;
+}
+function PaginaMaterial({ id }: { id: string | undefined }) {
+  const [tipoRegistro, setTipoRegistro] = useState<TipoMovimentacaoResiduo | null>(null);
+  const [confirmacao, setConfirmacao] = useState<string | null>(null);
   const carregar = useCallback(
     (signal: AbortSignal) =>
       consultas.consultarMaterial(
@@ -26,13 +34,23 @@ export function Material() {
     `material:${id}`,
     carregar,
   );
+  const avisoConfirmacao = confirmacao ? (
+    <div className="ec-movement-success" role="status">
+      {confirmacao}
+      {carregando && ' Atualizando saldo e extrato…'}
+      {erro && ' A consulta do saldo e do extrato falhou. Tente consultar novamente; o registro já foi confirmado.'}
+    </div>
+  ) : null;
+  function aoConfirmar(registro: MovimentacaoResiduoResponseDTO) {
+    setTipoRegistro(null);
+    setConfirmacao(`${registro.tipoMovimentacaoResiduo === "ENTRADA" ? "Entrada" : "Saída"} de ${quantidade(Math.abs(registro.quantidade))} ${unidades[registro.material.unidadeMedida]} registrada com sucesso.`);
+    recarregar();
+  }
   if (carregando)
-    return (
-      <EstadoConsulta carregando erro={null} aoTentarNovamente={recarregar} />
-    );
+    return <>{avisoConfirmacao}<EstadoConsulta carregando erro={null} aoTentarNovamente={recarregar} /></>;
   if (ehMaterialNaoEncontrado(erro))
     return (
-      <EstadoVazio
+      <>{avisoConfirmacao}<EstadoVazio
         titulo="Material não encontrado"
         acao={
           <Link className="ec-button ec-button-primary" to="/">
@@ -41,19 +59,20 @@ export function Material() {
         }
       >
         Escolha um dos materiais disponíveis no painel de saldos.
-      </EstadoVazio>
+      </EstadoVazio></>
     );
   if (erro || !dados)
     return (
-      <EstadoConsulta
+      <>{avisoConfirmacao}<EstadoConsulta
         carregando={false}
         erro={erro}
         aoTentarNovamente={recarregar}
-      />
+      /></>
     );
   const { material, movimentacoes } = dados;
   return (
     <>
+      {avisoConfirmacao}
       <Link className="ec-back-link" to="/">
         <Icone nome="voltar" width="17" height="17" />
         Voltar ao painel
@@ -108,10 +127,8 @@ export function Material() {
               : "Consulta ao estoque."}
           </strong>{" "}
           {ambiente.modo === "demo"
-            ? "Os registros abaixo são ilustrativos. "
-            : ""}
-          O registro de entradas e saídas ficará disponível na etapa de
-          formulários.
+            ? "Os registros são ilustrativos. Explore os formulários sem gravar dados."
+            : "Registre entradas e saídas para manter o estoque atualizado."}
         </p>
       </div>
       <section
@@ -126,26 +143,23 @@ export function Material() {
           <div className="ec-movement-actions">
             <button
               className="ec-button ec-button-primary"
-              disabled
-              aria-describedby="registro-pendente"
+              onClick={() => setTipoRegistro("ENTRADA")}
             >
               <Icone nome="entrada" width="17" height="17" />
               Registrar entrada
             </button>
             <button
               className="ec-button ec-button-secondary"
-              disabled
-              aria-describedby="registro-pendente"
+              onClick={() => setTipoRegistro("SAIDA")}
             >
               <Icone nome="saida" width="17" height="17" />
               Registrar saída
             </button>
           </div>
         </div>
-        <span id="registro-pendente" className="ec-sr-only">
-          Registro indisponível nesta etapa. Os formulários de entrada e saída
-          ainda serão implementados.
-        </span>
+        <div className="ec-statement-refresh">
+          <button className="ec-button ec-button-secondary" onClick={recarregar}>Atualizar extrato</button>
+        </div>
         <div className="ec-movement-list">
           {movimentacoes.length === 0 && (
             <EstadoVazio titulo="Nenhuma movimentação registrada">
@@ -195,6 +209,7 @@ export function Material() {
           ))}
         </div>
       </section>
+      {tipoRegistro && <FormularioMovimentacao material={material} tipo={tipoRegistro} aoFechar={() => setTipoRegistro(null)} aoConfirmar={aoConfirmar} />}
     </>
   );
 }
