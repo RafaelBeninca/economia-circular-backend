@@ -18,7 +18,7 @@ import java.util.List;
 //         R2: Movimentações com o tipo 'SAIDA' devem possuir quantidade negativa, e movimentações do tipo 'ENTRADA' devem possuir
 //             quantidade positiva
 //
-// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id} e POST /movimentacoesResiduos (/movimentacoesResiduos em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @Service
 public class MovimentacaoResiduoService {
@@ -65,5 +65,11 @@ public class MovimentacaoResiduoService {
         var movimentacaoResiduo = this.movimentacaoResiduoRepository.save(movimentacaoResiduoMapper.toEntity(requestDTO, material));
 
         return this.movimentacaoResiduoMapper.toResponse(movimentacaoResiduo);
+    }
+
+    public void remover(Long id) {
+        var movimentacaoResiduo = this.movimentacaoResiduoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Movimentação de resíduo não encontrada!"));
+
+        this.movimentacaoResiduoRepository.delete(movimentacaoResiduo);
     }
 }

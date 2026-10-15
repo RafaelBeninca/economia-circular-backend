@@ -19,7 +19,7 @@ import java.util.List;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /movimentacoesResiduos.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id} e POST /movimentacoesResiduos (/movimentacoesResiduos em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /movimentacoesResiduos, GET /movimentacoesResiduos/{id}, POST /movimentacoesResiduos e DELETE /movimentacoesResiduos/{id} (/movimentacoesResiduos em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/movimentacoesResiduos")
@@ -57,6 +57,17 @@ public class MovimentacaoResiduoController {
         var movimentacao = this.movimentacaoResiduoService.criar(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(movimentacao);
+    }
+
+    @Operation(summary = "Remove uma movimentação")
+    @ApiResponse(responseCode = "204", description = "Movimentação removida")
+    @ApiResponse(responseCode = "404", description = "Não existe movimentação com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@Parameter(description = "Id da movimentação", example = "1") @PathVariable Long id) {
+        this.movimentacaoResiduoService.remover(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

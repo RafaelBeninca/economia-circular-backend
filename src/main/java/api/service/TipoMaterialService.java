@@ -13,7 +13,7 @@ import java.util.Optional;
 // CAMADA: Service
 // RESPONSABILIDADE: cadastrar e consultar tipos de materiais
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id} e POST /movimentacoesResiduos (/tiposMateriais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @Service
 public class TipoMaterialService {
@@ -40,5 +40,11 @@ public class TipoMaterialService {
         var tipoMaterial = this.tipoMaterialRepository.save(tipoMaterialMapper.toEntity(requestDTO));
 
         return this.tipoMaterialMapper.toResponse(tipoMaterial);
+    }
+
+    public void remover(Long id) {
+        var tipoMaterial = this.tipoMaterialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Tipo material não encontrado!"));
+
+        this.tipoMaterialRepository.delete(tipoMaterial);
     }
 }

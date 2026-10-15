@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 // Importa a exceção lançada quando o corpo não é um JSON legível.
 import org.springframework.http.converter.HttpMessageNotReadableException;
+// Importa a exceção lançada quando uma operação viola uma restrição do banco (ex.: chave estrangeira).
+import org.springframework.dao.DataIntegrityViolationException;
 // Importa a exceção lançada quando o @Valid reprova o DTO.
 import org.springframework.web.bind.MethodArgumentNotValidException;
 // Importa a anotação que marca um método como tratador de exceção.
@@ -88,6 +90,14 @@ public class ApiExceptionHandler {
         // e.getMessage() traria detalhes internos do Jackson -- não vai para o cliente.
         return responder(HttpStatus.BAD_REQUEST,
                 "Corpo da requisição inválido: confira o JSON e os valores possíveis para os Enums", request, List.of());
+    }
+
+    // 400 de integridade: tentar apagar um registro ainda referenciado por
+    // outro (chave estrangeira) é um pedido inválido, não um erro do servidor.
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErroDTO> tratarIntegridade(DataIntegrityViolationException e, HttpServletRequest request) {
+        return responder(HttpStatus.BAD_REQUEST,
+                "Não é possível apagar: o registro ainda está sendo usado por outro.", request, List.of());
     }
 
     // Monta o ErroDTO e a resposta HTTP -- um lugar só, igual a um mapper.

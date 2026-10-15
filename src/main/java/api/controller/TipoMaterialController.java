@@ -22,7 +22,7 @@ import java.util.Optional;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /tiposMateriais.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id} e POST /movimentacoesResiduos (/tiposMateriais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /tiposMateriais, GET /tiposMateriais/{id}, POST /tiposMateriais e DELETE /tiposMateriais/{id} (/tiposMateriais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/tiposMateriais")
@@ -60,6 +60,19 @@ public class TipoMaterialController {
         var tipoMaterial = this.tipoMaterialService.criar(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(tipoMaterial);
+    }
+
+    @Operation(summary = "Remove um tipo de material")
+    @ApiResponse(responseCode = "204", description = "Tipo de material removido")
+    @ApiResponse(responseCode = "400", description = "O tipo de material ainda está sendo usado por algum material",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Não existe tipo de material com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@Parameter(description = "Id do tipo de material", example = "1") @PathVariable Long id) {
+        this.tipoMaterialService.remover(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

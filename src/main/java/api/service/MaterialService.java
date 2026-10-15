@@ -13,7 +13,7 @@ import java.util.List;
 // RESPONSABILIDADE: cadastrar e consultar materiais.
 // REGRAS:
 //         R3: Não podem exitir materiais duplicados (com mesmo nome e unidade de medida)
-// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id} e POST /materiais
+// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id}, POST /materiais e DELETE /materiais/{id}
 // SITUAÇÃO: implementada.
 @Service
 public class MaterialService {
@@ -48,5 +48,11 @@ public class MaterialService {
         var material = this.materialRepository.save(materialMapper.toEntity(requestDTO, tipoMaterial));
 
         return this.materialMapper.toResponse(material);
+    }
+
+    public void remover(Long id) {
+        var material = this.materialRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Material não encontrado!"));
+
+        this.materialRepository.delete(material);
     }
 }

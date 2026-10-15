@@ -19,7 +19,7 @@ import java.util.List;
 // CAMADA: Controller
 // RESPONSABILIDADE: receber as requisições de /materiais.
 // REGRAS: Não se aplicam aqui
-// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id} e POST /materiais (/materiais em docs/contrato-da-api.md)
+// ROTAS ATENDIDAS: GET /materiais, GET /materiais/{id}, POST /materiais e DELETE /materiais/{id} (/materiais em docs/contrato-da-api.md)
 // SITUAÇÃO: implementada
 @RestController
 @RequestMapping("/materiais")
@@ -56,6 +56,19 @@ public class MaterialController {
     public ResponseEntity<MaterialResponseDTO> criar(@RequestBody @Valid MaterialRequestDTO requestDTO) {
         var material = this.materialService.criar(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(material);
+    }
+
+    @Operation(summary = "Remove um material")
+    @ApiResponse(responseCode = "204", description = "Material removido")
+    @ApiResponse(responseCode = "400", description = "O material ainda está sendo usado por alguma movimentação",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Não existe material com esse id",
+            content = @Content(schema = @Schema(implementation = ErroDTO.class)))
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@Parameter(description = "Id do material", example = "1") @PathVariable Long id) {
+        this.materialService.remover(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
