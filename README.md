@@ -1,5 +1,7 @@
 # API de Economia Circular
 
+Versão hospedada: https://economia-circular-iota.vercel.app/
+
 API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço agregado, para quem gerencia os resíduos da produção.
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
