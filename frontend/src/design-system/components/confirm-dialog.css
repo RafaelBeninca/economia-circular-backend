@@ -1,0 +1,193 @@
+.confirm {
+  position: relative;
+  padding: var(--ec-space-8) var(--ec-space-6) var(--ec-space-6);
+  text-align: center;
+  font-family: inherit;
+}
+
+.confirm__close {
+  position: absolute;
+  top: var(--ec-space-3);
+  right: var(--ec-space-3);
+  width: var(--ec-control-height-sm);
+  height: var(--ec-control-height-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ec-color-surface-2);
+  color: var(--ec-color-text-3);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.confirm__close:hover {
+  background: var(--ec-color-surface-hover);
+  color: var(--ec-color-text);
+}
+
+.confirm__close svg {
+  width: 15px;
+  height: 15px;
+}
+
+.confirm__icon {
+  width: 60px;
+  height: 60px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  margin-bottom: var(--ec-space-4);
+}
+
+.confirm__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.confirm--danger .confirm__icon {
+  background: var(--ec-color-error-bg);
+  color: var(--ec-color-error);
+}
+
+.confirm--warning .confirm__icon {
+  background: var(--ec-color-warning-bg);
+  color: var(--ec-color-on-warning-bg);
+}
+
+.confirm--info .confirm__icon {
+  background: var(--ec-color-info-bg);
+  color: var(--ec-color-info);
+}
+
+.confirm__title {
+  margin: 0 0 var(--ec-space-2);
+  font-size: var(--ec-font-size-subtitle);
+  font-weight: var(--ec-font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--ec-color-text);
+}
+
+.confirm__text {
+  margin: 0 auto var(--ec-space-6);
+  font-size: var(--ec-font-size-body);
+  line-height: var(--ec-line-height-body);
+  color: var(--ec-color-text-3);
+  max-width: 38ch;
+}
+
+.confirm__list {
+  margin: 0 0 var(--ec-space-6);
+  padding-left: var(--ec-space-6);
+  list-style: disc;
+  text-align: left;
+  font-size: var(--ec-font-size-body);
+  line-height: var(--ec-line-height-body);
+  color: var(--ec-color-text-3);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.confirm__list li + li {
+  margin-top: var(--ec-space-1);
+}
+
+.confirm__actions {
+  display: flex;
+  gap: var(--ec-space-3);
+}
+
+.confirm__actions .confirm__btn {
+  flex: 1;
+}
+
+.confirm__actions--single {
+  justify-content: center;
+}
+
+.confirm__actions--single .confirm__btn {
+  flex: 0 1 60%;
+}
+
+.confirm__btn {
+  height: var(--ec-control-height-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ec-font-size-body);
+  font-weight: var(--ec-font-weight-semibold);
+  border-radius: var(--ec-radius-lg);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.05s ease;
+}
+
+.confirm__btn:active {
+  transform: translateY(var(--ec-state-offset-active));
+}
+
+.confirm__btn--ghost {
+  background: var(--ec-color-surface-2);
+  color: var(--ec-color-text);
+  border-color: var(--ec-color-border);
+}
+
+.confirm__btn--ghost:hover {
+  background: var(--ec-color-surface-hover);
+}
+
+.confirm--danger .confirm__btn--solid {
+  background: var(--ec-color-error);
+  color: var(--ec-color-on-error);
+}
+
+.confirm--danger .confirm__btn--solid:hover {
+  opacity: var(--ec-state-opacity-hover);
+}
+
+.confirm--danger .confirm__btn--solid:active {
+  opacity: var(--ec-state-opacity-active);
+  box-shadow: var(--ec-shadow-active-sm);
+}
+
+.confirm--warning .confirm__btn--solid {
+  background: var(--ec-color-warning);
+  color: var(--ec-color-on-primary);
+}
+
+.confirm--warning .confirm__btn--solid:hover {
+  opacity: var(--ec-state-opacity-hover);
+}
+
+.confirm--warning .confirm__btn--solid:active {
+  opacity: var(--ec-state-opacity-active);
+  box-shadow: var(--ec-shadow-active-sm);
+}
+
+.confirm--info .confirm__btn--solid {
+  background: var(--ec-color-primary);
+  color: var(--ec-color-on-primary);
+}
+
+.confirm--info .confirm__btn--solid:hover {
+  background: var(--ec-color-primary-hover);
+}
+
+.confirm--info .confirm__btn--solid:active {
+  background: var(--ec-color-primary-active);
+  box-shadow: var(--ec-shadow-active-sm);
+}
+
+.confirm__btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

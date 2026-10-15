@@ -1,0 +1,15 @@
+.font-grid-produtos tr th span {
+  font-size: 8pt !important;
+}
+
+.font-grid-produtos tr td span {
+  font-size: 8pt !important;
+}
+
+tr.tr-destacar-hover:hover td {
+  background-color: var(--ec-color-surface-hover) !important;
+}
+
+tr.tr-destacar td {
+  background-color: var(--ec-color-surface-hover) !important;
+}

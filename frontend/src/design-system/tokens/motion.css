@@ -1,0 +1,5 @@
+:root {
+  --ec-motion-duration: 240ms;
+  --ec-motion-duration-loading: 3400ms;
+  --ec-motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}

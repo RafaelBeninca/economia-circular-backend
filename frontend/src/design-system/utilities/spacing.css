@@ -1,0 +1,29 @@
+.height-min-155 {
+  min-height: 155px !important;
+}
+
+.pd-top-5 {
+  padding-top: 5% !important;
+}
+
+.pd-top-20 {
+  padding-top: 20% !important;
+}
+
+.m-5px {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.td-va-m {
+  vertical-align: middle !important;
+}
+
+/* Helper de centralização absoluta (spinner/preview). */
+.centralizar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -6%;
+  margin-top: -6%;
+}

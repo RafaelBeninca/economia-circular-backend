@@ -1,0 +1,39 @@
+.ec-scroll-fina {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ec-color-border) transparent;
+}
+
+.ec-scroll-fina::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ec-scroll-fina::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ec-scroll-fina::-webkit-scrollbar-thumb {
+  background-color: var(--ec-color-border);
+  border-radius: var(--ec-radius-full);
+}
+
+.ec-scroll-fina::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ec-color-text-3);
+}
+
+.ec-header-fixo-pagina {
+  display: none;
+  position: fixed;
+  z-index: 20;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid var(--ec-color-border-hover);
+  border-top: 0;
+  border-radius: 0 0 var(--ec-radius-lg) var(--ec-radius-lg);
+  background: var(--ec-color-surface-2);
+  box-shadow: var(--ec-shadow-sm);
+}
+
+.ec-header-fixo-pagina table {
+  margin: 0;
+}

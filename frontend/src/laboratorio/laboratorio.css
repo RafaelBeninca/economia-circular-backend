@@ -1,0 +1,32 @@
+/* CAMADA: Apresentação didática
+   RESPONSABILIDADE: manter cenários e JSON legíveis nos dois temas e no celular.
+   SITUAÇÃO: CSS nativo; só tokens semânticos para cores. */
+.ec-rule-lab { margin-top: 28px; min-width: 0; border: 1px solid var(--ec-color-border); border-radius: var(--ec-radius-lg); background: var(--ec-color-surface); }
+.ec-rule-lab summary { padding: 20px 24px; cursor: pointer; font-size: 14px; font-weight: var(--ec-font-weight-medium); }
+.ec-rule-lab summary:focus-visible, .ec-rule-lab select:focus-visible { outline: 2px solid var(--ec-color-primary); outline-offset: 3px; }
+.ec-rule-lab-tag { font-size: 11px; margin-left: 16px; color: var(--ec-color-text-2); font-family: var(--ec-font-family-mono); white-space: nowrap; }
+.ec-rule-lab-content { border-top: 1px solid var(--ec-color-divider); padding: 24px; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+.ec-rule-lab-content p { margin: 0 0 14px; }
+.ec-rule-lab-content h3 { font-size: 15px; font-weight: var(--ec-font-weight-medium); margin: 0 0 12px; }
+.ec-rule-lab-intro, .ec-rule-lab-footnote { color: var(--ec-color-text-2); }
+.ec-rule-lab-prepare { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin: 22px 0; }
+.ec-rule-lab-prepare label { display: grid; gap: 6px; flex: 1 1 260px; min-width: 0; }
+.ec-rule-lab select { width: 100%; min-width: 0; font: inherit; font-size: 14px; padding: 11px 12px; background: var(--ec-color-surface); color: var(--ec-color-text); border: 1px solid var(--ec-color-border); border-radius: var(--ec-radius-md); }
+.ec-rule-lab .ec-button { min-height: 44px; white-space: normal; }
+.ec-rule-lab-scenario { margin: 18px 0; }
+.ec-rule-lab-route { display: block; padding: 10px 12px; margin-bottom: 16px; background: var(--ec-color-surface-2); font-family: var(--ec-font-family-mono); border-radius: var(--ec-radius-md); }
+.ec-rule-lab .ec-json-block { min-width: 0; margin: 16px 0; }
+.ec-rule-lab .ec-json-block pre { max-height: 320px; overflow: auto; }
+.ec-rule-lab-notice, .ec-rule-lab-result { padding: 16px; border-radius: var(--ec-radius-md); }
+.ec-rule-lab-notice, .ec-rule-lab-result-warning { background: var(--ec-color-warning-bg); color: var(--ec-color-on-warning-bg); }
+.ec-rule-lab-result-rule { background: var(--ec-color-success-bg); color: var(--ec-color-on-success-bg); }
+.ec-rule-lab-result { margin-top: 18px; }
+.ec-rule-lab-result .ec-json-block { color: var(--ec-color-text); }
+.ec-rule-lab-footnote { margin-top: 22px !important; font-size: 11px; }
+@media (max-width: 560px) {
+  .ec-rule-lab summary { padding: 18px; }
+  .ec-rule-lab-content { padding: 18px; }
+  .ec-rule-lab-prepare .ec-button { width: 100%; }
+  .ec-rule-lab select { font-size: 16px; }
+  .ec-rule-lab-tag { margin-left: 8px; }
+}

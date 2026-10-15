@@ -20,6 +20,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.dao.DataIntegrityViolationException;
 // Importa a exceção lançada quando o @Valid reprova o DTO.
 import org.springframework.web.bind.MethodArgumentNotValidException;
+// Importa a exceção lançada quando um parâmetro da URL não pode ser convertido.
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 // Importa a anotação que marca um método como tratador de exceção.
 import org.springframework.web.bind.annotation.ExceptionHandler;
 // Importa a anotação que aplica o tratador a todos os controllers.
@@ -80,6 +82,15 @@ public class ApiExceptionHandler {
                 .toList();
         // A mensagem geral é fixa; o detalhe de cada campo está na lista.
         return responder(HttpStatus.BAD_REQUEST, "Dados inválidos: confira a lista de campos", request, campos);
+    }
+
+    // 400 de parâmetro: a conversão acontece antes de o Controller rodar. Sem este
+    // tratamento, materialId=abc escaparia do formato ErroDTO prometido pelo contrato.
+    // Também vale para ids inválidos no caminho, pois o Spring usa a mesma exceção.
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErroDTO> tratarParametroInvalido(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
+        return responder(HttpStatus.BAD_REQUEST, "Parâmetro inválido: confira a lista de campos", request,
+                List.of(new CampoErroDTO(e.getName(), "Valor incompatível com o tipo esperado")));
     }
 
     // 400 de JSON ilegível: vírgula faltando, data em formato errado, texto

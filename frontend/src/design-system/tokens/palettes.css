@@ -1,0 +1,28 @@
+/* Paleta teal: distingue ações primárias dos estados de sucesso e erro. */
+html[data-palette="teal"] {
+  --ec-color-primary: var(--ec-color-teal-700);
+  --ec-color-primary-hover: var(--ec-color-teal-800);
+  --ec-color-primary-active: var(--ec-color-teal-800);
+  --ec-color-primary-subtle: var(--ec-color-teal-50);
+  --ec-color-on-primary-subtle: var(--ec-color-teal-700);
+  --ec-color-link: var(--ec-color-teal-700);
+  --ec-color-focus: color-mix(
+    in srgb,
+    var(--ec-color-teal-600) 35%,
+    transparent
+  );
+}
+
+html[data-palette="teal"].dark-theme {
+  --ec-color-primary: var(--ec-color-teal-dark-500);
+  --ec-color-primary-hover: var(--ec-color-teal-dark-400);
+  --ec-color-primary-active: var(--ec-color-teal-dark-600);
+  --ec-color-primary-subtle: var(--ec-color-teal-dark-900);
+  --ec-color-on-primary-subtle: var(--ec-color-teal-dark-350);
+  --ec-color-link: var(--ec-color-teal-dark-350);
+  --ec-color-focus: color-mix(
+    in srgb,
+    var(--ec-color-teal-dark-350) 45%,
+    transparent
+  );
+}

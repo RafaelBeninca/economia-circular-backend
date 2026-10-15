@@ -1,0 +1,28 @@
+.width-10 {
+  width: 10% !important;
+}
+
+.width-15 {
+  width: 15% !important;
+}
+
+.width-35 {
+  width: 35% !important;
+}
+
+.width-107-7 {
+  width: 100%;
+}
+
+/* Helper de centralização absoluta (spinner/preview de tamanho fixo). */
+.center {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  justify-content: center;
+  text-align: center;
+}

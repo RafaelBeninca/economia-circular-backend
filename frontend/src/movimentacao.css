@@ -1,0 +1,58 @@
+/* CAMADA: Apresentação
+   RESPONSABILIDADE: formulário de movimentação acessível nos dois temas e no celular.
+   SITUAÇÃO: componentes nativos com tokens semânticos. */
+.ec-movement-dialog {
+  padding: 0;
+  margin: auto;
+  width: min(520px, calc(100% - 32px));
+  max-width: 100%;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 1px solid var(--ec-color-border);
+  border-radius: var(--ec-radius-xl);
+  background: var(--ec-color-surface);
+  color: var(--ec-color-text);
+  box-shadow: var(--ec-shadow-lg);
+}
+.ec-movement-dialog::backdrop { background: var(--ec-color-scrim); }
+.ec-movement-dialog form { padding: 28px; }
+.ec-movement-dialog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.ec-movement-dialog h2 { font-size: 27px; font-weight: var(--ec-font-weight-medium); letter-spacing: -0.7px; margin: 8px 0; }
+.ec-form-context { font-size: 12px; line-height: 1.8; color: var(--ec-color-text-2); margin: 0 0 24px; overflow-wrap: anywhere; }
+.ec-form-context strong { font-weight: var(--ec-font-weight-medium); color: var(--ec-color-text); }
+.ec-form-field { margin-top: 22px; }
+.ec-form-field label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 9px; font-size: 12px; font-weight: var(--ec-font-weight-medium); }
+.ec-form-field label span { font-size: 10px; color: var(--ec-color-text-2); font-weight: var(--ec-font-weight-regular); }
+.ec-form-field input, .ec-form-field textarea {
+  width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid var(--ec-color-border);
+  border-radius: var(--ec-radius-md); background: var(--ec-color-surface); color: var(--ec-color-text);
+  font: inherit; font-size: 14px; line-height: 1.6;
+}
+.ec-form-field input { font-family: var(--ec-font-family-mono); font-size: 21px; }
+.ec-form-field textarea { resize: vertical; min-height: 100px; }
+.ec-form-field :is(input, textarea)::placeholder { color: var(--ec-color-text-3); }
+.ec-form-field :is(input, textarea):focus-visible { outline: 2px solid var(--ec-color-primary); outline-offset: 2px; }
+.ec-form-field [aria-invalid="true"] { border-color: var(--ec-color-error); }
+.ec-field-help, .ec-field-error { font-size: 11px; line-height: 1.7; margin: 8px 0 0; }
+.ec-field-help { color: var(--ec-color-text-2); }
+.ec-field-error { color: var(--ec-color-error); }
+.ec-form-notice, .ec-form-error, .ec-movement-success { font-size: 12px; line-height: 1.8; padding: 14px 16px; border-radius: var(--ec-radius-md); overflow-wrap: anywhere; }
+.ec-form-notice { color: var(--ec-color-on-warning-bg); background: var(--ec-color-warning-bg); }
+.ec-form-error { color: var(--ec-color-error); background: var(--ec-color-error-bg); }
+.ec-form-error p { margin: 6px 0 0; }
+.ec-form-error:focus { outline: 2px solid var(--ec-color-error); outline-offset: 2px; }
+.ec-form-progress { min-height: 20px; margin: 16px 0; font-size: 11px; color: var(--ec-color-text-2); }
+.ec-form-actions { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--ec-color-border); padding-top: 20px; }
+.ec-form-actions .ec-button { min-height: 44px; }
+.ec-movement-success { color: var(--ec-color-on-success-bg); background: var(--ec-color-success-bg); margin-bottom: 24px; }
+.ec-statement-refresh { display: flex; justify-content: flex-end; padding: 12px 24px; border-bottom: 1px solid var(--ec-color-border); }
+.ec-movement-description { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .ec-movement-dialog form { padding: 22px; }
+  .ec-movement-dialog h2 { font-size: 25px; }
+  .ec-form-field :is(input, textarea) { font-size: 16px; }
+  .ec-form-field input { font-size: 21px; }
+  .ec-form-actions { flex-wrap: wrap; }
+  .ec-form-actions .ec-button { flex: 1 1 100%; }
+  .ec-form-actions .ec-button-primary { order: -1; }
+}

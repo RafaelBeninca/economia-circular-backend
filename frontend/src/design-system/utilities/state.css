@@ -1,0 +1,12 @@
+.disabled {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+
+.linha-clicavel {
+  cursor: pointer;
+}
+
+.linha-clicavel:hover {
+  background-color: var(--ec-color-surface-hover);
+}

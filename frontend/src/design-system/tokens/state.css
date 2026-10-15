@@ -1,0 +1,19 @@
+/* Constantes de interação que não são cor nem sombra — só para os variantes
+   sem tom de hover/active próprio (destaque=brand, destrutivo=error). Os
+   demais (primário, secundário, ghost) resolvem hover/active com tokens de
+   cor em semantic.css/elevation.css, não usam nada deste arquivo.
+
+   Nomenclatura: --ec-state-{mecanismo}-{estado}
+   mecanismo   o CSS onde o valor é aplicado: brightness (filter), opacity,
+               offset (transform: translateY).
+   estado      hover | active | loading — igual ao estado de semantic.css,
+               mas aqui é um número/função, não uma cor. */
+
+:root {
+  --ec-state-brightness-hover: brightness(0.96); /* destaque */
+  --ec-state-brightness-active: brightness(0.9);
+  --ec-state-opacity-hover: 0.9; /* destrutivo */
+  --ec-state-opacity-active: 0.8;
+  --ec-state-opacity-loading: 0.85;
+  --ec-state-offset-active: 1px; /* translateY */
+}

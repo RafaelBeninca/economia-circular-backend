@@ -3,7 +3,7 @@ package api.model;
 import api.enums.TipoUnidadeMedida;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+import api.config.EnumPostgreSqlJdbcType;
 
 import java.util.List;
 
@@ -23,7 +23,8 @@ public class Material {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unidade_medida", columnDefinition = "TipoUnidadeMedida", nullable = false)
-    @JdbcType(PostgreSQLEnumJdbcType.class)
+    // Usa os valores das migrations sem registrar DROP/CREATE dos tipos no Hibernate.
+    @JdbcType(EnumPostgreSqlJdbcType.class)
     private TipoUnidadeMedida unidadeMedida;
 
     @Column(nullable = false)

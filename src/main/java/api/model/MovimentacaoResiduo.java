@@ -2,12 +2,15 @@ package api.model;
 
 import api.enums.TipoMovimentacaoResiduo;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+import api.config.EnumPostgreSqlJdbcType;
+
+import java.time.LocalDateTime;
 
 // CAMADA: Model
 // RESPONSABILIDADE: A movimentação (entrada ou saida) de um material originado de uma produção e que deseja ser controlada,
-// gravada na tabela movimentacoes_residuos (migration V5).
+// gravada na tabela movimentacoes_residuos (migrations V5 e V6).
 // SITUAÇÃO: implementada
 @Entity
 @Table(name = "movimentacoes_residuos")
@@ -19,7 +22,8 @@ public class MovimentacaoResiduo {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", columnDefinition = "TipoMovimentacaoResiduo", nullable = false)
-    @JdbcType(PostgreSQLEnumJdbcType.class)
+    // Usa os valores das migrations sem registrar DROP/CREATE dos tipos no Hibernate.
+    @JdbcType(EnumPostgreSqlJdbcType.class)
     private TipoMovimentacaoResiduo movimentacaoResiduo;
 
     @Column(nullable = false)
@@ -31,6 +35,13 @@ public class MovimentacaoResiduo {
     @ManyToOne
     @JoinColumn(name = "materiais_id")
     private Material material;
+
+    // @CreationTimestamp: o Hibernate preenche este campo no INSERT, sozinho. Não existe
+    // setter de propósito -- a data do registro não é escolhida por quem chama a API, e
+    // updatable = false impede que um UPDATE futuro a sobrescreva.
+    @CreationTimestamp
+    @Column(name = "criado_em", nullable = false, updatable = false)
+    private LocalDateTime criadoEm;
 
     protected MovimentacaoResiduo() {}
 
@@ -78,5 +89,9 @@ public class MovimentacaoResiduo {
 
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
     }
 }

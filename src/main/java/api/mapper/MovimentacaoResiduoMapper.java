@@ -28,7 +28,7 @@ public class MovimentacaoResiduoMapper {
     }
 
     public MovimentacaoResiduoResponseDTO toResponse(MovimentacaoResiduo movimentacaoResiduo) {
-        return new MovimentacaoResiduoResponseDTO(movimentacaoResiduo.getId(), this.materialMapper.toResponse(movimentacaoResiduo.getMaterial()), movimentacaoResiduo.getMovimentacaoResiduo(), movimentacaoResiduo.getQuantidade(), movimentacaoResiduo.getDescricao());
+        return new MovimentacaoResiduoResponseDTO(movimentacaoResiduo.getId(), this.materialMapper.toResponse(movimentacaoResiduo.getMaterial()), movimentacaoResiduo.getMovimentacaoResiduo(), movimentacaoResiduo.getQuantidade(), movimentacaoResiduo.getDescricao(), movimentacaoResiduo.getCriadoEm());
     }
 
     public List<MovimentacaoResiduoResponseDTO> toResponseList(List<MovimentacaoResiduo> movimentacaoResiduos) {

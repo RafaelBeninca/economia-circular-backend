@@ -1,0 +1,30 @@
+/* Nomenclatura: --ec-space-{N}, onde N × 4px = o valor em pixels — não é um
+   índice sequencial (space-6 é 24px, não o 6º token). Buracos são
+   intencionais (só os stops usados); novo token deve ser múltiplo de 4.
+
+   Como escolher: comece de --ec-space-4 (16px, o "padrão" entre a maioria
+   dos elementos). Só desça se as duas coisas forem praticamente uma coisa só
+   (rótulo colado no campo, ícone colado no texto de um botão); só suba se
+   estiver separando blocos/seções bem diferentes, não itens do mesmo grupo.
+
+   space-1 (4px)   ícone ↔ texto dentro do MESMO controle (botão, badge)
+   space-2 (8px)   rótulo ↔ seu próprio campo; padding vertical de botão/input
+   space-3 (12px)  padding horizontal de botão/input
+   space-4 (16px)  entre itens irmãos do mesmo grupo (campo→campo, título→campo)
+   space-6 (24px)  padding de um card/painel (a moldura em volta do conteúdo)
+   space-8 (32px)  entre seções distintas da mesma tela
+   space-12 (48px) espaço "de fora" do card, separando-o do resto da página */
+
+:root {
+  --ec-space-1: 4px;
+  --ec-space-2: 8px;
+  --ec-space-3: 12px;
+  --ec-space-4: 16px;
+  --ec-space-6: 24px;
+  --ec-space-8: 32px;
+  --ec-space-12: 48px;
+
+  --ec-control-height-sm: 30px;
+  --ec-control-height-md: 38px;
+  --ec-control-height-lg: 46px;
+}

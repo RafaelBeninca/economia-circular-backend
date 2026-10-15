@@ -42,7 +42,7 @@ Os resíduos gerados na produção não têm gestão, onde ninguém sabe ao cert
 |---|---|---|---|
 | R1 | A saída de um material não pode ser maior que o saldo dele (a soma de todas as suas movimentações) | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
 | R2 | Uma movimentação de saída precisa ter quantidade negativa e uma de entrada, quantidade positiva | `MovimentacaoResiduoService` | `POST /movimentacoesResiduos` |
-| R3 | Não pode existir mais de um material com o mesmo nome e a mesma unidade de medida | `MaterialService` | `POST /materiais` |
+| R3 | Não pode existir mais de um material com o mesmo nome e a mesma unidade de medida | `MaterialService` | `POST /materiais` e `PUT /materiais/{id}` |
 
 **Fora do escopo:** logística de transporte de resíduos e gerenciamento de destinos homologados.
 
@@ -55,6 +55,7 @@ Os resíduos gerados na produção não têm gestão, onde ninguém sabe ao cert
 | Banco de dados | PostgreSQL 16, em Docker |
 | Migrations | Flyway |
 | Documentação da API | springdoc-openapi (Swagger UI) |
+| CORS | Liberado para `http://localhost:5173` e `http://127.0.0.1:5173`, os endereços do front em desenvolvimento |
 
 ## Arquitetura
 
@@ -64,9 +65,9 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 
 | Entidade | Migration | Model | Repository | DTOs | Mapper | Service | Controller |
 |---|---|---|---|---|---|---|---|
-| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
-| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
-| MovimentacaoResiduo | `V5__criar_movimentacoes_residuos.sql`, pronta (enum em `V4__criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
+| TipoMaterial | `V1__criar_tipos_materiais.sql`, pronta | `TipoMaterial`, pronta | `TipoMaterialRepository`, pronto | `TipoMaterialRequestDTO`, `TipoMaterialResponseDTO`, `TipoMaterialUpdateRequestDTO`, prontos | `TipoMaterialMapper`, implementado | `TipoMaterialService`, implementado | `TipoMaterialController`, implementado |
+| Material | `V3__criar_materiais.sql`, pronta (enum em `V2__criar_tipos_unidades_medidas.sql`) | `Material`, pronta | `MaterialRepository`, pronto | `MaterialRequestDTO`, `MaterialResponseDTO`, `MaterialComSaldoResponseDTO`, `MaterialUpdateRequestDTO`, prontos | `MaterialMapper`, implementado | `MaterialService`, implementado | `MaterialController`, implementado |
+| MovimentacaoResiduo | `V5__criar_movimentacoes_residuos.sql` e `V6__adicionar_criado_em_movimentacoes_residuos.sql`, prontas (enum em `V4__criar_tipos_movimentacoes_residuos.sql`) | `MovimentacaoResiduo`, pronta | `MovimentacaoResiduoRepository`, pronto | `MovimentacaoResiduoRequestDTO`, `MovimentacaoResiduoResponseDTO`, prontos | `MovimentacaoResiduoMapper`, implementado | `MovimentacaoResiduoService`, implementado | `MovimentacaoResiduoController`, implementado |
 
 ## Entidades
 
@@ -74,7 +75,7 @@ A API é organizada em camadas. Uma requisição entra pelo Controller, passa pe
 |---|---|---|
 | TipoMaterial | A categoria de um material (por exemplo, Metal ou Biológico) | Classifica vários materiais |
 | Material | Um resíduo controlado, com unidade de medida e preço por unidade | Pertence a um tipo de material e aparece em várias movimentações |
-| MovimentacaoResiduo | Uma entrada ou saída de um material | Pertence a um material |
+| MovimentacaoResiduo | Uma entrada ou saída de um material, com a data em que foi registrada | Pertence a um material |
 
 Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](docs/modelo-de-dominio.md).
 
@@ -87,12 +88,14 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 | `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200`   | Nenhum |
 | `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200`   | `404` |
 | `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201`   | `400` |
+| `PUT` | `/tiposMateriais/{id}` | Edita o nome de um tipo de material | Nenhuma | `200`   | `400`, `404` |
 | `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | `204` | `400`, `404` |
-| `GET` | `/materiais` | Lista os materiais | Nenhuma | `200`   | Nenhum |
-| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200`   | `404` |
+| `GET` | `/materiais` | Lista os materiais, cada um com o saldo atual | Nenhuma | `200`   | Nenhum |
+| `GET` | `/materiais/{id}` | Busca um material, com o saldo atual | Nenhuma | `200`   | `404` |
 | `POST` | `/materiais` | Cadastra um material | R3 | `201`   | `400`, `404` |
+| `PUT` | `/materiais/{id}` | Edita o nome e o preço por unidade de um material | R3 | `200`   | `400`, `404` |
 | `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | `204` | `400`, `404` |
-| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200`   | Nenhum |
+| `GET` | `/movimentacoesResiduos` | Lista as movimentações, da mais recente para a mais antiga. Com `?materialId=` devolve o extrato de um material | Nenhuma | `200`   | `400` (filtro inválido) |
 | `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200`   | `404` |
 | `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | R1 e R2 | `201`   | `400`, `404` |
 | `DELETE` | `/movimentacoesResiduos/{id}` | Remove uma movimentação | Nenhuma | `204` | `404` |
@@ -111,7 +114,7 @@ Content-Type: application/json
 }
 ```
 
-Resposta, `201 OK`:
+Resposta, `201 Created`:
 
 ```json
 {
@@ -128,7 +131,8 @@ Resposta, `201 OK`:
   },
   "tipoMovimentacaoResiduo": "SAIDA",
   "quantidade": -15,
-  "descricao": "Saída referente à venda do material para terceiros"
+  "descricao": "Saída referente à venda do material para terceiros",
+  "criadoEm": "2026-10-15T14:23:11"
 }
 ```
 
@@ -155,7 +159,7 @@ Estão previstas, mas ainda não respondem.
 
 | Recurso | O que vai fazer |
 |---|---|
-| Não há | Atualização (`PUT`) não faz parte desta etapa |
+| Não há | Não há rotas pendentes: `PUT` e `DELETE` já respondem |
 
 O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-api.md](docs/contrato-da-api.md).
 
@@ -182,15 +186,32 @@ Para testar as rotas, use o Swagger UI ou o **Postman**. No Postman, importe tod
 
 Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banco e rodar as migrations do zero: `docker compose down -v` e suba de novo.
 
+## Frontend
+
+A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. O painel de saldos e o extrato consultam a fonte configurada: **demonstração**, padrão sem HTTP, ou **API**, por `VITE_MODO_DADOS=api` e `VITE_API_URL`. A origem aparece na interface; erros de rede não ativam exemplos. Os bastidores mostram as requisições reais. No modo API, os formulários registram entradas e saídas e consultam novamente saldo e extrato; no modo demo, permitem explorar sem gravar. O cadastro de materiais/tipos fica no painel; o laboratório R1/R2/R3 fica recolhido no detalhe do material e só envia tentativas por ação explícita. No modo demo, essas funções permitem explorar sem gravar nem simular respostas HTTP.
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+Abra `http://127.0.0.1:5173`. Para verificar os tipos e gerar a versão de produção: `npm run build`.
+
+O frontend é independente do backend: executar os comandos Maven descritos acima continua sem exigir Node.js nem o build da interface.
+
 ## Situação do projeto
 
 | Parte | Situação |
 |---|---|
 | Desenho | Completo: problema e regras neste README, modelo e contrato em `docs/` |
 | Estrutura | As 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller |
-| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam; R1, R2 e R3 estão implementadas |
+| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam, e `PUT /{id}` edita tipos de materiais e materiais; R1, R2 e R3 estão implementadas |
+| Consumo por um front | `GET /materiais` devolve o saldo de cada material, `GET /movimentacoesResiduos` aceita o filtro `?materialId=` e traz a data de cada movimentação, e o CORS está liberado para o front em desenvolvimento |
 
-**Ainda não funciona:** nada planejado nesta etapa está pendente. A atualização (`PUT`) não foi implementada.
+**Validação das mudanças para o frontend:** CORS, saldo, data e filtro foram revisados estaticamente, mas ainda não foram compilados nem executados neste ambiente; a JDK disponível é a 11 e o projeto exige a 25.
+
+**Estado atual:** nada planejado nesta etapa está pendente: `PUT` e `DELETE` já estão implementadas.
 
 ## Documentação
 

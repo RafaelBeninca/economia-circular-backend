@@ -1,0 +1,7 @@
+# Somente o código e o POM necessários ao build entram no contexto.
+# Isso também exclui .git, .env, frontend, target e documentos locais.
+**
+!pom.xml
+!src/
+!src/**
+!Dockerfile.vercel
