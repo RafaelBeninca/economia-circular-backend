@@ -27,18 +27,18 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 ### Materiais
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
-|---|---|---|---|---|---|---|---|
-| `GET` | `/materiais` | Lista os materiais | Nenhuma | lista de `MaterialResponseDTO` | `200` | Nenhum | sim |
-| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `MaterialResponseDTO` | `200` | `404` | sim |
-| `POST` | `/materiais` | Cadastra um material | `MaterialRequestDTO` | `MaterialResponseDTO` | `200` | `400`, `404` | sim |
+|---|---|---|---|---|---------|---|---|
+| `GET` | `/materiais` | Lista os materiais | Nenhuma | lista de `MaterialResponseDTO` | `200`   | Nenhum | sim |
+| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `MaterialResponseDTO` | `200`   | `404` | sim |
+| `POST` | `/materiais` | Cadastra um material | `MaterialRequestDTO` | `MaterialResponseDTO` | `201`   | `400`, `404` | sim |
 
 ### Movimentações de resíduos
 
 | Verbo | Caminho | O que faz | Entrada | Saída | Sucesso | Erros | Funciona |
-|---|---|---|---|---|---|---|---|
-| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | lista de `MovimentacaoResiduoResponseDTO` | `200` | Nenhum | sim |
-| `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `MovimentacaoResiduoResponseDTO` | `200` | `404` | sim |
-| `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | `MovimentacaoResiduoRequestDTO` | `MovimentacaoResiduoResponseDTO` | `200` | `400`, `404` | sim |
+|---|---|---|---|---|---------|---|---|
+| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | lista de `MovimentacaoResiduoResponseDTO` | `200`   | Nenhum | sim |
+| `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `MovimentacaoResiduoResponseDTO` | `200`   | `404` | sim |
+| `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | `MovimentacaoResiduoRequestDTO` | `MovimentacaoResiduoResponseDTO` | `201`   | `400`, `404` | sim |
 
 ### Rotas que não são CRUD
 
@@ -47,9 +47,9 @@ Não há rotas fora do CRUD.
 ## Rotas origem das regras de negócio
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
-|---|---|---|---|---|---|
-| `POST` | `/movimentacoesResiduos` | Registra a movimentação e valida saldo e sinal | R1 e R2 | `200` | `400`, `404` |
-| `POST` | `/materiais` | Cadastra o material e impede duplicidade de nome e unidade | R3 | `200` | `400`, `404` |
+|---|---|---|---|---------|---|
+| `POST` | `/movimentacoesResiduos` | Registra a movimentação e valida saldo e sinal | R1 e R2 | `201`   | `400`, `404` |
+| `POST` | `/materiais` | Cadastra o material e impede duplicidade de nome e unidade | R3 | `201`   | `400`, `404` |
 
 ## DTOs
 
@@ -102,7 +102,7 @@ Requisição:
 }
 ```
 
-Resposta, `200 OK`:
+Resposta, `201 Created`:
 
 ```json
 {
@@ -130,7 +130,7 @@ Requisição (saída, com quantidade negativa):
 }
 ```
 
-Resposta, `200 OK`:
+Resposta, `201 Created`:
 
 ```json
 {

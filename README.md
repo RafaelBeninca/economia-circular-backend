@@ -1,6 +1,6 @@
 # API de Economia Circular
 
-API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço agregado, para quem gerencia os resíduos da produção.
+API para controlar os resíduos gerados na produção: registra os materiais, seus tipos e as entradas e saídas de cada um, mantendo o saldo e o preço, para quem gerencia os resíduos da produção.
 
 Projeto Final da disciplina de Backend (Engenharia de Software, SATC). **Etapa 1: arquitetura do backend.**
 
@@ -83,16 +83,16 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 ### As que já funcionam
 
 | Verbo | Caminho | O que faz | Regra | Sucesso | Erros |
-|---|---|---|---|---|---|
-| `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200` | Nenhum |
-| `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200` | `404` |
-| `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201` | `400` |
-| `GET` | `/materiais` | Lista os materiais | Nenhuma | `200` | Nenhum |
-| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200` | `404` |
-| `POST` | `/materiais` | Cadastra um material | R3 | `200` | `400`, `404` |
-| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200` | Nenhum |
-| `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200` | `404` |
-| `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | R1 e R2 | `200` | `400`, `404` |
+|---|---|---|---|---------|---|
+| `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200`   | Nenhum |
+| `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200`   | `404` |
+| `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201`   | `400` |
+| `GET` | `/materiais` | Lista os materiais | Nenhuma | `200`   | Nenhum |
+| `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200`   | `404` |
+| `POST` | `/materiais` | Cadastra um material | R3 | `201`   | `400`, `404` |
+| `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200`   | Nenhum |
+| `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200`   | `404` |
+| `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | R1 e R2 | `201`   | `400`, `404` |
 
 Exemplo de requisição:
 
@@ -108,7 +108,7 @@ Content-Type: application/json
 }
 ```
 
-Resposta, `200 OK`:
+Resposta, `201 Created`:
 
 ```json
 {
