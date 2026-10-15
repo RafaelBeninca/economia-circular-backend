@@ -87,12 +87,15 @@ Atributos, tipos e o diagrama das tabelas estão em [docs/modelo-de-dominio.md](
 | `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | `200`   | Nenhum |
 | `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `200`   | `404` |
 | `POST` | `/tiposMateriais` | Cadastra um tipo de material | Nenhuma | `201`   | `400` |
+| `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | `204` | `400`, `404` |
 | `GET` | `/materiais` | Lista os materiais | Nenhuma | `200`   | Nenhum |
 | `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `200`   | `404` |
 | `POST` | `/materiais` | Cadastra um material | R3 | `201`   | `400`, `404` |
+| `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | `204` | `400`, `404` |
 | `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | `200`   | Nenhum |
 | `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `200`   | `404` |
 | `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | R1 e R2 | `201`   | `400`, `404` |
+| `DELETE` | `/movimentacoesResiduos/{id}` | Remove uma movimentação | Nenhuma | `204` | `404` |
 
 Exemplo de requisição:
 
@@ -152,7 +155,7 @@ Estão previstas, mas ainda não respondem.
 
 | Recurso | O que vai fazer |
 |---|---|
-| Não há | Atualização e remoção (`PUT` e `DELETE`) não fazem parte desta etapa |
+| Não há | Atualização (`PUT`) não faz parte desta etapa |
 
 O contrato completo, com todas as rotas e os DTOs, está em [docs/contrato-da-api.md](docs/contrato-da-api.md).
 
@@ -185,9 +188,9 @@ Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banc
 |---|---|
 | Desenho | Completo: problema e regras neste README, modelo e contrato em `docs/` |
 | Estrutura | As 3 entidades têm migration, entidade, Repository, DTOs, Mapper, Service e Controller |
-| API e regras | As rotas `POST`, `GET` e `GET /{id}` das 3 entidades funcionam; R1, R2 e R3 estão implementadas |
+| API e regras | As rotas `POST`, `GET`, `GET /{id}` e `DELETE /{id}` das 3 entidades funcionam; R1, R2 e R3 estão implementadas |
 
-**Ainda não funciona:** nada planejado nesta etapa está pendente. Atualização e remoção (`PUT` e `DELETE`) não foram implementadas.
+**Ainda não funciona:** nada planejado nesta etapa está pendente. A atualização (`PUT`) não foi implementada.
 
 ## Documentação
 

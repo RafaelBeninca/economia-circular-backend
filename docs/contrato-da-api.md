@@ -23,6 +23,7 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 | `GET` | `/tiposMateriais` | Lista os tipos de materiais | Nenhuma | lista de `TipoMaterialResponseDTO` | `200` | Nenhum | sim |
 | `GET` | `/tiposMateriais/{id}` | Busca um tipo de material | Nenhuma | `TipoMaterialResponseDTO` | `200` | `404` | sim |
 | `POST` | `/tiposMateriais` | Cadastra um tipo de material | `TipoMaterialRequestDTO` | `TipoMaterialResponseDTO` | `201` | `400` | sim |
+| `DELETE` | `/tiposMateriais/{id}` | Remove um tipo de material | Nenhuma | Nenhuma (sem corpo) | `204` | `400`, `404` | sim |
 
 ### Materiais
 
@@ -31,6 +32,7 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 | `GET` | `/materiais` | Lista os materiais | Nenhuma | lista de `MaterialResponseDTO` | `200`   | Nenhum | sim |
 | `GET` | `/materiais/{id}` | Busca um material | Nenhuma | `MaterialResponseDTO` | `200`   | `404` | sim |
 | `POST` | `/materiais` | Cadastra um material | `MaterialRequestDTO` | `MaterialResponseDTO` | `201`   | `400`, `404` | sim |
+| `DELETE` | `/materiais/{id}` | Remove um material | Nenhuma | Nenhuma (sem corpo) | `204` | `400`, `404` | sim |
 
 ### Movimentações de resíduos
 
@@ -39,6 +41,7 @@ Coluna **Funciona**: `sim` para as rotas que já respondem nesta etapa.
 | `GET` | `/movimentacoesResiduos` | Lista as movimentações | Nenhuma | lista de `MovimentacaoResiduoResponseDTO` | `200`   | Nenhum | sim |
 | `GET` | `/movimentacoesResiduos/{id}` | Busca uma movimentação | Nenhuma | `MovimentacaoResiduoResponseDTO` | `200`   | `404` | sim |
 | `POST` | `/movimentacoesResiduos` | Registra uma entrada ou saída de resíduo | `MovimentacaoResiduoRequestDTO` | `MovimentacaoResiduoResponseDTO` | `201`   | `400`, `404` | sim |
+| `DELETE` | `/movimentacoesResiduos/{id}` | Remove uma movimentação | Nenhuma | Nenhuma (sem corpo) | `204` | `404` | sim |
 
 ### Rotas que não são CRUD
 
@@ -173,3 +176,4 @@ No `400` de validação, a lista `campos` traz um item por campo inválido: `{"c
 | `400` | JSON ilegível ou campo inválido no DTO de entrada |
 | `404` | Id que não existe (na rota, ou `materialId` / `tipoMaterialId` no corpo) |
 | `400` | Regra de negócio violada: a `mensagem` diz qual regra barrou o pedido |
+| `400` | Apagar um tipo de material ou material que ainda é usado por outro registro (chave estrangeira) |
