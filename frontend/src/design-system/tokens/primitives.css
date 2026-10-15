@@ -1,0 +1,59 @@
+/* Rampas de cor. Somente tokens semânticos escolhem estes valores.
+   Componentes usam papéis como primary, text, success e error. */
+:root {
+  --ec-color-slate-0: #ffffff;
+  --ec-color-slate-100: #f8fafc;
+  --ec-color-slate-200: #f5f7fa;
+  --ec-color-slate-300: #f3f5f8;
+  --ec-color-slate-400: #edf0f4;
+  --ec-color-slate-500: #e3e8ef;
+  --ec-color-slate-600: #aeb6c2;
+  --ec-color-slate-700: #8a94a3;
+  --ec-color-slate-800: #57616f;
+  --ec-color-slate-900: #1a2432;
+  --ec-color-slate-dark-0: #e7ecf2;
+  --ec-color-slate-dark-100: #9da9b7;
+  --ec-color-slate-dark-200: #6b7686;
+  --ec-color-slate-dark-300: #525e6c;
+  --ec-color-slate-dark-400: #29343f;
+  --ec-color-slate-dark-500: #28323c;
+  --ec-color-slate-dark-600: #242e39;
+  --ec-color-slate-dark-700: #212a34;
+  --ec-color-slate-dark-800: #1c242d;
+  --ec-color-slate-dark-900: #141a21;
+  --ec-color-blue-50: #eaf1fd;
+  --ec-color-blue-600: #1f5fd9;
+  --ec-color-blue-700: #1a51bc;
+  --ec-color-blue-800: #16459f;
+  --ec-color-blue-dark-350: #5a8cf0; /* step fora do padrão (100 em 100) — tom intermediário só p/ anel de foco escuro */
+  --ec-color-blue-dark-400: #5389f3;
+  --ec-color-blue-dark-500: #3b78f0;
+  --ec-color-blue-dark-600: #2e68dc;
+  --ec-color-blue-dark-700: #285cc2;
+  --ec-color-blue-dark-900: #17253c;
+  --ec-color-amber-100: #fff3d6;
+  --ec-color-amber-800: #8a6408;
+  --ec-color-amber-dark-500: #e7b03a;
+  --ec-color-amber-dark-900: #2e2711;
+  --ec-color-green-50: #e4f5ec;
+  --ec-color-green-700: #12824c;
+  --ec-color-green-800: #0f6b3f;
+  --ec-color-green-dark-400: #3fbe79;
+  --ec-color-green-dark-500: #36ae6c;
+  --ec-color-green-dark-600: #2e9c5f;
+  --ec-color-green-dark-950: #122a20;
+  --ec-color-red-50: #fce9e9;
+  --ec-color-red-700: #c31516;
+  --ec-color-red-dark-400: #f0565b;
+  --ec-color-red-dark-950: #331617;
+  --ec-color-shadow-tint: #101a28;
+  --ec-color-teal-50: #ebf5f5;
+  --ec-color-teal-600: #0e8c8c;
+  --ec-color-teal-700: #0b7676;
+  --ec-color-teal-800: #086060;
+  --ec-color-teal-dark-350: #73d3d3;
+  --ec-color-teal-dark-400: #4cc6c6;
+  --ec-color-teal-dark-500: #2cb6b6;
+  --ec-color-teal-dark-600: #22a0a0;
+  --ec-color-teal-dark-900: #0e3a3a;
+}

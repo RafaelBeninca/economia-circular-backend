@@ -1,0 +1,7 @@
+.border-right {
+  border-right: 1px solid var(--ec-color-divider) !important;
+}
+
+html.dark-theme .border-right {
+  border-right-color: var(--ec-color-border) !important;
+}

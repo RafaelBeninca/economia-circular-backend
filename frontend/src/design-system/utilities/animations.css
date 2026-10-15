@@ -1,0 +1,27 @@
+.destacar-blink-warning a {
+  animation: blink-warning 700ms infinite !important;
+  animation-timing-function: linear !important;
+  width: 100%;
+}
+
+@keyframes blink-warning {
+  50% {
+    background-color: var(--ec-color-warning);
+  }
+}
+
+@keyframes pulseEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.efeito-pulse {
+  animation: pulseEffect 1s infinite;
+}

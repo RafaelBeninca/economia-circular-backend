@@ -1,0 +1,37 @@
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ec-shadow-focus);
+}
+
+.btn-tabela {
+  color: var(--ec-color-text-2);
+  cursor: pointer;
+  margin-left: var(--ec-space-1);
+  margin-right: var(--ec-space-1);
+  font-size: var(--ec-font-size-body);
+  line-height: var(--ec-line-height-body);
+  vertical-align: -15%;
+  transition:
+    opacity 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-tabela i {
+  transition: color 0.15s ease;
+}
+
+.btn-tabela:hover i,
+.btn-tabela:focus-visible i {
+  color: var(--ec-color-text);
+}
+
+.btn-tabela:active {
+  opacity: var(--ec-state-opacity-active);
+  transform: translateY(var(--ec-state-offset-active));
+}
+
+.btn-tabela:focus-visible {
+  outline: none;
+  box-shadow: var(--ec-shadow-focus);
+}

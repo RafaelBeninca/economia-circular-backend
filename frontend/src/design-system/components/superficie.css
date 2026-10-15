@@ -1,0 +1,96 @@
+/* Superfície de item de catálogo — casca compartilhada entre o card da grade
+   e a linha da lista. Quem aplica: a feature (card) ou o shell do catálogo
+   (linha). Sem isso os dois modos
+   derivam visualmente com o tempo. */
+
+.ec-superficie {
+  background: var(--ec-color-surface);
+  border: 1px solid var(--ec-color-border);
+  border-radius: var(--ec-radius-lg);
+  box-shadow: var(--ec-shadow-sm);
+  transition:
+    border-color var(--ec-motion-duration) var(--ec-motion-easing),
+    box-shadow var(--ec-motion-duration) var(--ec-motion-easing);
+}
+
+.ec-superficie--interativa:hover {
+  border-color: var(--ec-color-border-hover);
+  box-shadow: var(--ec-shadow-lg);
+}
+
+/* Arranjo em pilha — usado pelo card da grade */
+.ec-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.ec-card__midia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ec-color-border);
+  background: var(--ec-color-surface-2);
+  color: var(--ec-color-text-2);
+  font-size: var(--ec-font-size-label);
+}
+
+.ec-card__corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ec-space-3);
+  padding: var(--ec-space-4);
+  flex: 1;
+}
+
+.ec-card__titulo {
+  margin: 0;
+  font-size: var(--ec-font-size-body);
+  font-weight: 600;
+  line-height: 1.35;
+  min-height: calc(var(--ec-font-size-body) * 1.35 * 2);
+  color: var(--ec-color-text);
+}
+
+.ec-card__rodape {
+  margin-top: auto;
+  padding-top: var(--ec-space-3);
+  border-top: 1px solid var(--ec-color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ec-space-2);
+}
+
+/* Arranjo em linha — usado pela lista. A feature define as trilhas no
+   próprio componente. position:relative é a âncora pra
+   selos posicionados absoluto que a feature queira "vazar" pra fora da linha (ex: selo de
+   repasse) — position sozinho não afeta layout de quem não usa. */
+.ec-catalogo__linha {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--ec-catalogo-colunas, 1fr);
+  grid-template-rows: 1fr 0fr;
+  align-items: center;
+  gap: 0 var(--ec-space-4);
+  padding: var(--ec-space-4);
+}
+
+/* Truncamento por número de linhas — usado por título e descrição de item */
+.ec-truncar-linhas {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: pretty;
+}
+
+.ec-truncar-linhas--2 {
+  -webkit-line-clamp: 2;
+}
+.ec-truncar-linhas--1 {
+  -webkit-line-clamp: 1;
+}

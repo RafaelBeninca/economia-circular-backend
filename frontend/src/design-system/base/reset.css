@@ -1,0 +1,54 @@
+/* CAMADA: Base
+   RESPONSABILIDADE: normalizar elementos nativos e respeitar tema e navegação por teclado. */
+:root {
+  color-scheme: light;
+}
+html.dark-theme {
+  color-scheme: dark;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scrollbar-gutter: stable;
+}
+body {
+  margin: 0;
+  background: var(--ec-color-bg);
+  color: var(--ec-color-text);
+  font-family: var(--ec-font-family);
+  font-size: var(--ec-font-size-body);
+  line-height: var(--ec-line-height-body);
+  -webkit-font-smoothing: antialiased;
+}
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--ec-color-primary);
+  outline-offset: 3px;
+}
+svg {
+  vertical-align: middle;
+}
+::selection {
+  background: var(--ec-color-primary-subtle);
+  color: var(--ec-color-on-primary-subtle);
+}

@@ -1,0 +1,57 @@
+/* Escala tipográfica. Tamanhos em rem (base 16px) para respeitar o zoom de
+   fonte do usuário; fontes IBM Plex carregadas via <link> no index.html.
+
+   Nomenclatura: --ec-{papel}-{escala}
+   papel   eixo tipográfico: font-family, font-size, font-weight,
+           line-height, letter-spacing.
+   escala  display > title > subtitle > heading > body > label — da fonte mais chamativa
+           (títulos grandes) pra mais discreta (legendas); "mono" é a família
+           monoespaçada, usada à parte pra números/código.
+
+   Como escolher: comece de "body" (14px, o texto padrão de leitura — parágrafo,
+   valor de campo, texto de tabela). Suba a escala pra títulos/hierarquia, desça
+   pra "label" em rótulo/legenda/texto de apoio. Sempre use size+line-height+
+   weight do MESMO nível (não misture font-size-title com line-height-body).
+
+   display (30px)  título da tela inteira, aparece 1x (ex: "Pedido Diário")
+   title (24px)    título de uma seção dentro da tela
+   subtitle (20px) destaque dentro de uma seção (ex: "Melhor condição")
+   heading (18px)  título de bloco ou de card (ex: nome do produto no card)
+   body (14px)     texto padrão — é o que você usa se não tem certeza
+   label (12px)    rótulo de campo, legenda, badge, texto de apoio
+   mono            números/código que precisam alinhar (preço, EAN, quantidade)
+
+   weight: regular = texto comum;
+   medium = leve destaque;
+   semibold = labels e títulos;
+   bold = display/ênfase forte (ex: preço total). */
+
+:root {
+  --ec-font-family:
+    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --ec-font-family-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --ec-font-size-display: 1.875rem; /* Display — 30px */
+  --ec-font-size-title: 1.5rem; /* Título — 24px */
+  --ec-font-size-subtitle: 1.25rem; /* Subtítulo — 20px */
+  --ec-font-size-heading: 1.125rem; /* Heading — 18px */
+  --ec-font-size-body: 0.875rem; /* Corpo — 14px */
+  --ec-font-size-label: 0.75rem; /* Label — 12px */
+  --ec-font-size-mono: 0.8125rem; /* Mono — 13px */
+
+  --ec-font-weight-regular: 400;
+  --ec-font-weight-medium: 500;
+  --ec-font-weight-semibold: 600;
+  --ec-font-weight-bold: 700;
+
+  --ec-line-height-display: 1.15;
+  --ec-line-height-title: 1.2;
+  --ec-line-height-subtitle: 1.3;
+  --ec-line-height-heading: 1.25;
+  --ec-line-height-body: 1.6;
+  --ec-line-height-label: 1.4;
+
+  --ec-letter-spacing-display: -0.5px;
+  --ec-letter-spacing-label: 0.3px;
+}

@@ -1,0 +1,101 @@
+/* Design System — ponto de entrada e mapa da pasta.
+
+   tokens/primitives.css  rampas brutas de cor (hex/rgb), sem papel de UI
+   tokens/semantic.css    papéis de UI (bg, primary, error...) apontando
+                            pras rampas acima — é o que os componentes usam
+   tokens/typography.css  escala de fonte (tamanho, peso, line-height)
+   tokens/spacing.css     escala de espaçamento (--ec-space-N)
+   tokens/elevation.css   raio de borda + sombras prontas
+   tokens/state.css       filtro/opacidade de hover/active pra cores sem
+                            tom de estado próprio (brand, error)
+
+   COMO ESCOLHER UM TOKEN AO FAZER UM COMPONENTE — 4 perguntas, nessa ordem:
+   1) Categoria: que TIPO de valor eu preciso? (cor, espaçamento, tipografia,
+      raio/sombra, efeito de interação)
+   2) Papel: pra QUAL elemento da tela é isso? (veja o glossário no topo do
+      arquivo daquela categoria — tokens/{primitives,semantic,typography,
+      spacing,elevation,state}.css)
+   3) Já existe modificador/estado pronto pro que eu quero (on-/-bg/subtle/
+      deep/-2/-3/hover/active), ou vou precisar de token novo?
+   4) Só crie token novo se, depois de checar o glossário do arquivo certo,
+      nada servir — deve ser raro.
+
+   Exemplos por categoria, usando um formulário (input + label + botão dentro
+   de um cartão) como cenário — parte do componente → token → por quê:
+
+   color (semantic.css) — todo o ciclo de um <input>:
+     fundo normal        --ec-color-surface        é uma superfície comum
+     borda normal         --ec-color-border         contorno padrão
+     texto digitado       --ec-color-text           conteúdo principal
+     placeholder          --ec-color-text-2         texto de apoio, ênfase
+                                                      menor que o valor digitado
+     borda com erro        --ec-color-error          papel de erro, não uma
+                                                      cor "vermelha" qualquer
+     texto de ajuda do erro --ec-color-error          mesmo papel do item acima
+     fundo desabilitado    --ec-color-surface-2      normal já é "surface", só
+                                                      desce 1 degrau (não usa
+                                                      --ec-color-disabled-bg,
+                                                      que é pra botão/checkbox)
+     texto desabilitado    --ec-color-text-disabled  estado de texto, não de fundo
+
+   space (spacing.css) — os respiros do mesmo formulário, do menor pro maior:
+     padding interno do input (vertical)  --ec-space-2 (8px)
+     gap entre o label e o campo          --ec-space-2 (8px)
+     gap entre um campo e outro           --ec-space-4 (16px)
+     padding do cartão que envolve tudo   --ec-space-6 (24px) — container
+                                          "respira" mais que o conteúdo interno
+
+   font (typography.css) — os 3 tamanhos de texto que aparecem no formulário:
+     label do campo         --ec-font-size-label (12px) + weight-semibold
+                            (pequeno mas destacado, pra guiar o olho)
+     valor digitado         --ec-font-size-body (14px) + weight-regular
+                            (é o texto "normal" de leitura)
+     texto de erro abaixo    --ec-font-size-label (12px) — mesmo tamanho do
+                            label, só a cor muda pra --ec-color-error
+
+   radius/shadow (elevation.css) — 2 níveis de arredondamento/elevação no
+   mesmo formulário (o cartão é "maior" que o campo, então tem valores maiores):
+     canto do input                --ec-radius-md (8px)
+     canto do cartão que envolve    --ec-radius-lg (12px) — nível acima
+     elevação do cartão em repouso  --ec-shadow-sm — sombra leve, só pra
+                                    descolar do fundo da página
+     anel de foco do input          --ec-shadow-focus — já pronto, não
+                                    precisa montar cor+offset na mão
+
+   state (state.css) — comparando 2 botões do mesmo formulário pra mostrar
+   quando USA e quando NÃO usa este arquivo:
+     hover do botão "Salvar" (primário)   --ec-color-primary-hover — tom de
+                                          cor próprio existe, então NÃO usa
+                                          state.css
+     hover do botão "Melhor preço" (des-  --ec-state-brightness-hover,
+     taque/brand, sem tom de hover        aplicado via filter — só entra
+     próprio no design)                   aqui porque não existe cor dedicada */
+
+@import "./tokens/primitives.css";
+@import "./tokens/semantic.css";
+@import "./tokens/palettes.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/elevation.css";
+@import "./tokens/state.css";
+@import "./tokens/motion.css";
+@import "./base/reset.css";
+@import "./layout/app-shell.css";
+@import "./layout/form-layout.css";
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/confirm-dialog.css";
+@import "./components/table.css";
+@import "./components/overlay.css";
+@import "./components/switch.css";
+@import "./components/superficie.css";
+@import "./components/campo-grade.css";
+@import "./utilities/sizing.css";
+@import "./utilities/spacing.css";
+@import "./utilities/typography.css";
+@import "./utilities/flex.css";
+@import "./utilities/borders.css";
+@import "./utilities/icons.css";
+@import "./utilities/animations.css";
+@import "./utilities/state.css";
+@import "./utilities/scroll.css";

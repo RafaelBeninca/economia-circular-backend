@@ -1,0 +1,60 @@
+.form-consulta {
+  margin: 20px 20px 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.form-cadastro {
+  margin: 20px;
+  box-sizing: border-box;
+  position: relative;
+  min-height: calc(100% - 40px);
+}
+
+.form-row > div > label {
+  font-weight: bold;
+  color: var(--ec-color-text-2);
+}
+
+.form-group label[for] {
+  font-size: 8pt !important;
+  font-weight: bold !important;
+  color: var(--ec-color-text-2);
+}
+
+html.dark-theme .form-row > div > label,
+html.dark-theme .form-group label[for] {
+  color: var(--ec-color-text-2) !important;
+}
+
+.form-only-label {
+  display: grid !important;
+}
+
+.form-row > .form-row {
+  flex: 1 1 100%;
+  width: 100%;
+}
+
+.form-row {
+  align-items: flex-end;
+}
+
+.form-row-stretch {
+  align-items: stretch !important;
+}
+
+.campo-obrigatorio {
+  color: var(--ec-color-error) !important;
+}
+
+.label-text {
+  font-weight: normal;
+}
+
+.ec-acoes-flutuantes {
+  z-index: 1;
+  float: right;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}

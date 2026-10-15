@@ -186,6 +186,20 @@ Para testar as rotas, use o Swagger UI ou o **Postman**. No Postman, importe tod
 
 Para parar: `Ctrl+C` na API e `docker compose stop` no banco. Para apagar o banco e rodar as migrations do zero: `docker compose down -v` e suba de novo.
 
+## Frontend
+
+A interface fica em [`frontend/`](frontend/README.md), com React, Vite e TypeScript. Nesta etapa, há um painel de saldos e um extrato de material com **dados de exemplo**, busca, filtro por categoria e tema claro/escuro. A integração HTTP e os formulários serão implementados nas próximas etapas.
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+Abra `http://127.0.0.1:5173`. Para verificar os tipos e gerar a versão de produção: `npm run build`.
+
+O frontend é independente do backend: executar os comandos Maven descritos acima continua sem exigir Node.js nem o build da interface.
+
 ## Situação do projeto
 
 | Parte | Situação |

@@ -1,0 +1,37 @@
+:root {
+  --ec-switch-largura-sm: 36px;
+  --ec-switch-altura-sm: 20px;
+  --ec-switch-indicador-sm: 14px;
+  --ec-switch-recuo-sm: 3px;
+  --ec-switch-largura-md: 48px;
+  --ec-switch-altura-md: 28px;
+  --ec-switch-indicador-md: 20px;
+  --ec-switch-recuo-md: 4px;
+  --ec-switch-largura-lg: 60px;
+  --ec-switch-altura-lg: 34px;
+  --ec-switch-indicador-lg: 26px;
+  --ec-switch-recuo-lg: 4px;
+
+  --ec-switch-alvo-minimo: 24px;
+  --ec-switch-borda-largura: 1px;
+  --ec-switch-raio: var(--ec-radius-full);
+
+  --ec-switch-fundo: var(--ec-color-border);
+  --ec-switch-fundo-hover: var(--ec-color-border-hover);
+  --ec-switch-fundo-active: var(--ec-color-border-hover);
+  --ec-switch-fundo-ligado: var(--ec-color-primary);
+  --ec-switch-fundo-ligado-hover: var(--ec-color-primary-hover);
+  --ec-switch-fundo-ligado-active: var(--ec-color-primary-active);
+  --ec-switch-fundo-desabilitado: var(--ec-color-disabled-bg);
+  --ec-switch-fundo-ligado-desabilitado: var(--ec-color-primary-subtle);
+  --ec-switch-borda-desabilitado: var(--ec-color-border);
+  --ec-switch-borda-ligado-desabilitado: var(--ec-color-primary);
+
+  --ec-switch-indicador-fundo: var(--ec-color-on-primary);
+  --ec-switch-indicador-fundo-desabilitado: var(--ec-color-surface);
+
+  --ec-switch-anel-foco: var(--ec-shadow-focus);
+  --ec-switch-afundar: var(--ec-shadow-active-sm);
+  --ec-switch-duracao: var(--ec-motion-duration);
+  --ec-switch-easing: var(--ec-motion-easing);
+}
