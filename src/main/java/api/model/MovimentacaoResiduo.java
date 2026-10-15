@@ -4,7 +4,7 @@ import api.enums.TipoMovimentacaoResiduo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+import api.config.EnumPostgreSqlJdbcType;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +22,8 @@ public class MovimentacaoResiduo {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", columnDefinition = "TipoMovimentacaoResiduo", nullable = false)
-    @JdbcType(PostgreSQLEnumJdbcType.class)
+    // Usa os valores das migrations sem registrar DROP/CREATE dos tipos no Hibernate.
+    @JdbcType(EnumPostgreSqlJdbcType.class)
     private TipoMovimentacaoResiduo movimentacaoResiduo;
 
     @Column(nullable = false)
